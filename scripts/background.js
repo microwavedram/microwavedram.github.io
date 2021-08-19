@@ -6,8 +6,8 @@ canvas.height = window.innerHeight
 let particlesArray;
 
 let mouse = {
-    x: null,
-    y: null,
+    x: 100000,
+    y: 100000,
     radius: (canvas.height/100)*(canvas.width/100)
 }
 
@@ -121,8 +121,8 @@ window.addEventListener('resize',
 
 window.addEventListener('mouseout',
     function() {
-        mouse.x = undefined;
-        mouse.y = undefined;
+        mouse.x = 100000;
+        mouse.y = 100000;
     }
 )
 

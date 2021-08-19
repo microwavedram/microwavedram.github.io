@@ -43,3 +43,36 @@
     font-size: 600%;
     font-family: Oswald;
 }
+
+.personbutton{
+    font-size: x-large;
+    border: none;
+    outline: none;
+    position: relative;
+    background-color: white;
+    color: black;
+    padding: 5px;
+    font-size: xx-large;
+    margin-right: 20px;
+    --border-size: 4px;
+}
+
+.personbutton::before {
+    content: '';
+    position: absolute;
+    transition: 0.1s ease-in-out;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border: var(--border-size) solid white
+}
+
+.personbutton:hover::before,
+.personbutton:focus::before {
+    top: calc(var(--border-size) * -2);
+    left: calc(var(--border-size) * -2);
+    right: calc(var(--border-size) * -2);
+    bottom: calc(var(--border-size) * -2);
+}
