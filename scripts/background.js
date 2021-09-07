@@ -80,7 +80,7 @@ class Particle {
 
 function init() {
     particlesArray = []
-    let rings = 1
+    let rings = 3
     for (let n = 0; n < rings; n++) {
         for (let i = 0; i < 360; i+=10) {
             let size = 2
@@ -109,8 +109,8 @@ function init() {
                 directionY = -1
             }
             else {
-                directionX = 1
-                directionY = 1
+                directionX = -1
+                directionY = -1
             }
             particlesArray.push(new Particle(x,y,directionX,directionY,size,color))
         }
@@ -124,7 +124,7 @@ function connect() {
         for (let b = a; b < particlesArray.length; b++) {
             let distance = ((particlesArray[a].x - particlesArray[b].x)*(particlesArray[a].x - particlesArray[b].x) + (particlesArray[a].y - particlesArray[b].y)*(particlesArray[a].y - particlesArray[b].y));
             if (distance < (canvas.width/7) * (canvas.height/7)) {
-                opacityValue = 1 - (distance/20000)
+                opacityValue = 1 - (distance/30000)
                 ctx.strokeStyle = 'rgba(255,255,255,'+opacityValue+')';
                 ctx.lineWidth = 1;
                 ctx.beginPath();
