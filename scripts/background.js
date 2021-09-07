@@ -1,4 +1,4 @@
-const canvas = document.getElementById("canvas1")
+const canvas = document.getElementById("background")
 const ctx = canvas.getContext('2d')
 canvas.width = window.innerWidth
 canvas.height = window.innerHeight
@@ -25,7 +25,8 @@ class Particle {
         this.directionX = directionX;
         this.directionY = directionY;
         this.size = size;
-        this.color = color
+        this.color = color;
+        this.debounce = false
     }
 
     draw() {
@@ -35,51 +36,86 @@ class Particle {
         ctx.fill();
     }
 
+    bounce() {
+        if (performance.now() < 1000) return
+        if (this.debounce == true) return
+        this.debounce = true
+        this.directionX = -this.directionX
+        this.directionY = -this.directionY
+        this.deviate()
+        setTimeout(() => {  this.debounce = false; }, 6000*Math.random());
+    }
+
+    deviate() {
+        this.directionX = Math.min(Math.max(this.directionX*Math.random(),-1),1)
+        this.directionY = Math.min(Math.max(this.directionY*Math.random(),-1),1)
+        
+        if (this.directionX < 0.1 && this.directionX > -0.1) {
+            this.directionX = (Math.random()-0.5)*2
+        }
+        if (this.directionY < 0.1 && this.directionY > -0.1) {
+            this.directionY = (Math.random()-0.5)*2
+        }
+    }
+
     update() {
-        if (this.x > canvas.width || this.x < 0) {
-            this.directionX = -this.directionX;
+        if (this.x < 0 || this.x > innerWidth) {
+            this.directionX = -this.directionX*2
+            this.debounce = true
+
+            setTimeout(() => {  this.debounce = false; }, 5000*Math.random());
         }
-        if (this.y > canvas.height || this.y < 0) {
-            this.directionY = -this.directionY;
+        if (this.y < 0 || this.y > innerHeight) {
+            this.directionY = -this.directionY*2
+            this.debounce = true
+
+            setTimeout(() => {  this.debounce = false; }, 5000*Math.random());
         }
 
-        let dx = mouse.x - this.x
-        let dy = mouse.y - this.y
-        let distance = Math.sqrt(dx*dx + dy*dy)
-        if (distance < mouse.radius + this.size) {
-            if (mouse.x < this.x && this.x < canvas.width - this.size * 10) {
-                this.x += 10;
-            }
-            if (mouse.x > this.x && this.x > this.size * 10) {
-                this.x -= 10;
-            }
-            if (mouse.y < this.y && this.y < canvas.height - this.size * 10) {
-                this.y += 10;
-            }
-            if (mouse.y > this.y && this.y > this.size * 10) {
-                this.y -= 10;
-            }
-        }
-        this.x += this.directionX;
-        this.y += this.directionX
-
+        this.x += this.directionX
+        this.y += this.directionY
         this.draw();
     }
 }
 
 function init() {
     particlesArray = []
-    let numberOfParticle = (canvas.height * canvas.width) / 9000
-    for (let i = 0; i < numberOfParticle; i++) {
-        let size = (Math.random() * 5) + 1;
-        let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
-        let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
-        let directionX = (Math.random() * 5) - 2.5;
-        let directionY = (Math.random() * 5) - 2.5;
-        let color = '#ffffff'
-        
-        particlesArray.push(new Particle(x,y,directionX,directionY,size,color))
+    let rings = 1
+    for (let n = 0; n < rings; n++) {
+        for (let i = 0; i < 360; i+=10) {
+            let size = 2
+            let x = (innerWidth / 2) + n+1 * 300 * Math.sin(i*(Math.PI/180))
+            let y = (innerHeight / 2) + n+1 * 300 *Math.cos(i*(Math.PI/180))
+            let directionX = 0
+            let directionY = 0
+            let color = '#ffffff'
+    
+            
+
+            if (x > innerWidth && y > innerHeight/2) {
+                directionX = 1
+                directionY = 1
+            }
+            else if (x < innerWidth/2 && y < innerHeight/2) {
+                directionX = -1
+                directionY = -1
+            }
+            else if (x < innerWidth/2 && y > innerHeight/2) {
+                directionX = -1
+                directionY = 1
+            }
+            else if (x > innerWidth/2 && y < innerHeight/2) {
+                directionX = 1
+                directionY = -1
+            }
+            else {
+                directionX = 1
+                directionY = 1
+            }
+            particlesArray.push(new Particle(x,y,directionX,directionY,size,color))
+        }
     }
+    
 }
 
 function connect() {
@@ -95,6 +131,10 @@ function connect() {
                 ctx.moveTo(particlesArray[a].x, particlesArray[a].y)
                 ctx.lineTo(particlesArray[b].x, particlesArray[b].y)
                 ctx.stroke();
+            }
+            if (distance < mouse.radius) {
+                particlesArray[a].bounce()
+                particlesArray[b].bounce()
             }
         }
     }

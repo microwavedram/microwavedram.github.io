@@ -1,78 +1,64 @@
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500&display=swap');
 
+:root {
+    font-size: 16px;
+    font-family: Oswald;
+    --background-color: #000000;
+    --background-seccondary-color:#444444 ;
+    --background-contrast: #ffffff;
+    --accent-color: #adff2f;
+}
+
 * {
-    color: white;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
     box-sizing: border-box;
 }
 
-#canvas1 {
+*:hover{
+    color: var(--accent-color);
+}
+
+body {
+    background-color: var(--background-color);
+    color: var(--background-contrast);
+    margin: 0;
+    padding: 0;
+}
+
+body::-webkit-scrollbar-track {
+    color: var(--background-color);
+}
+
+body::-webkit-scrollbar {
+    color: var(--accent-color)
+}
+
+main {
+    margin-left: 5rem;
+}
+
+#background {
     z-index: -1;
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: black;
+    background-color: var(--background-color)
+} 
+
+.navbar {
+    width: 5rem;
+    height: 100vh;
+    position: fixed;
+    opacity: 0.6;
+    background-color: var(--background-seccondary-color);
 }
 
-#titlebar {
-    box-sizing: initial;
-    background-color: white;
+.icon {
+    color: var(--background-contrast)
 }
 
-#titlebar nav a{
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: large;
-    color: black;
-    margin: 10px;
-    text-decoration: none;
-    transition: 0.1s ease-in-out;
-}
-
-#titlebar nav a:hover{
-    font-size: x-large;
-}
-
-#version{
-    float: right;
-    color:white
-}
-
-.mainheading{
-    font-size: 600%;
-    font-family: Oswald;
-}
-
-.personbutton{
-    font-size: x-large;
-    border: none;
-    outline: none;
-    position: relative;
-    background-color: white;
-    color: black;
-    padding: 5px;
-    font-size: xx-large;
-    margin-right: 20px;
-    --border-size: 4px;
-}
-
-.personbutton::before {
-    content: '';
-    position: absolute;
-    transition: 0.1s ease-in-out;
-    z-index: -1;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    border: var(--border-size) solid white
-}
-
-.personbutton:hover::before,
-.personbutton:focus::before {
-    top: calc(var(--border-size) * -2);
-    left: calc(var(--border-size) * -2);
-    right: calc(var(--border-size) * -2);
-    bottom: calc(var(--border-size) * -2);
+.navbar-item {
+    padding: 0;
+    margin: 0;
 }
