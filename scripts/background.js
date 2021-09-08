@@ -92,7 +92,7 @@ function init() {
     
             
 
-            if (x > innerWidth && y > innerHeight/2) {
+            if (x >= innerWidth/2 && y >= innerHeight/2) {
                 directionX = 1
                 directionY = 1
             }
@@ -100,7 +100,7 @@ function init() {
                 directionX = -1
                 directionY = -1
             }
-            else if (x < innerWidth/2 && y > innerHeight/2) {
+            else if (x <= innerWidth/2 && y >= innerHeight/2) {
                 directionX = -1
                 directionY = 1
             }
