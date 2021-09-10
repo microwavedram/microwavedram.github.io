@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500&display=swap');
 
 :root {
-    font-size: 16px;
+    font-size: 30px;
     font-family: Oswald;
     --background-color: #000000;
     --background-seccondary-color:#444444 ;
@@ -26,7 +26,6 @@
 }
 
 .center {
-    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -119,20 +118,25 @@ main {
     font-size: 2rem;
 }
 
-.people-div {
+.projects-div {
     background-color: var(--background-color);
     position: relative;
-    display: flex;
-    justify-content: space-around;
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    width: 80vw;
+}
+.project {
+    background-color: var(--background-seccondary-color);
+    padding: auto;
 }
 
-.people-person {
-    background-color: var(--background-contrast);
-    margin: 10px;
-    text-decoration: none;
+.larger {
+    font-size: 5rem;
 }
-.people-person a{
-    font-size: 6rem;
-    text-decoration: none;
+.main-div {
+    margin-left: 7rem;
+}
+.minhight {
+    min-height: 1rem;
+
 }
