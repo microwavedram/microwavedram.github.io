@@ -122,12 +122,17 @@ main {
     background-color: var(--background-color);
     position: relative;
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(4, 20%);
     width: 80vw;
 }
 .project {
     background-color: var(--background-seccondary-color);
-    padding: auto;
+    
+    object-fit: contain;
+}
+
+.project a{
+    font-size: 3rem;
 }
 
 .larger {
