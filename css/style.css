@@ -1,12 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@200&display=swap');
 
 :root {
     font-size: 30px;
-    font-family: Oswald;
+    font-family: Inconsolata;
     --background-color: #000000;
     --background-seccondary-color:#444444 ;
     --background-contrast: #ffffff;
-    --accent-color: #adff2f;
+    --accent-color: #00a2ff;
 }
 
 * {
@@ -48,7 +48,8 @@ body::-webkit-scrollbar {
 }
 
 main {
-    margin-left: 8rem;
+    margin-left: 10%;
+    margin-right: 10%;
 }
 
 #background {
@@ -60,51 +61,6 @@ main {
     height: 100%;
     background-color: var(--background-color)
 } 
-
-.navbar {
-    width: 8rem;
-    height: 100vh;
-    position: fixed;
-    background-color: var(--background-seccondary-color);
-    transition: 1s ease;
-}
-
-.navbar:hover {
-    width: 15rem;
-}
-
-
-.navbar-nav {
-    padding: 0;
-    padding-left: 0.5rem;
-    list-style-type: none;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-}
-
-.navbar-item {
-    min-height: 10%;
-}
-
-.navbar-link {
-    white-space: nowrap;
-    color: var(--background-contrast);
-    text-decoration: none;
-    font-size: 2rem;
-    position: inherit;
-    text-align: center;
-}
-
-.navbar-link:hover {
-    color: var(--accent-color);
-}
-
-.navbar-div {
-    background-color: var(--background-seccondary-color);
-}
 
 .title-div {
     padding-left: 1rem;
@@ -118,6 +74,10 @@ main {
     font-size: 2rem;
 }
 
+.navbar-link:hover {
+    color: var(--accent-color);
+}
+
 .projects-div {
     background-color: var(--background-color);
     position: relative;
@@ -129,19 +89,27 @@ main {
     background-color: var(--background-seccondary-color);
     
     object-fit: contain;
+    background-size: cover;
+    height: 150px;
 }
 
 .project a{
-    font-size: 3rem;
+    font-size: 30px;
+    margin: 0;
+}
+
+.project a:hover {
+    color: var(--accent-color)
+}
+
+.main-div {
+    margin-top: 20px;
 }
 
 .larger {
     font-size: 6vw;
 }
-.main-div {
-    margin-left: 7rem;
-}
+
 .minhight {
     min-height: 1rem;
-
 }
