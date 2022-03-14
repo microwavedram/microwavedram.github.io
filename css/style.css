@@ -79,7 +79,6 @@ main {
 }
 
 .projects-div {
-    background-color: var(--background-color);
     position: relative;
     display: grid;
     grid-template-columns: repeat(4, 20%);
