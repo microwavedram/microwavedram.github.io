@@ -84,6 +84,7 @@ main {
     display: grid;
     grid-template-columns: repeat(4, 20%);
     width: 80vw;
+    opacity: 0%;
 }
 .project {
     background-color: var(--background-seccondary-color);
