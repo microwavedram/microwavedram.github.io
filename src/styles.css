@@ -43,6 +43,12 @@ body {
     image-rendering: pixelated;
 }
 
+#copyright {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
 .container {
     touch-action: none;
     user-select: none;

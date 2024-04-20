@@ -1,4 +1,10 @@
+const MIN_ZOOM = -4000
+const MAX_ZOOM = 4000
+
 let grid_spacing = 64
+
+let mousex = 0;
+let mousey = 0;
 
 class WorldMap {
 
@@ -13,6 +19,23 @@ class WorldMap {
         this.py = 0
 
         this.tiles = {}
+        this.markers = [
+            {
+                x: 0,
+                y: 0,
+                label: "World Origin"
+            },
+            {
+                x: 8017,
+                y: 7245,
+                label: "Seraphia"
+            },
+            {
+                x: 6483,
+                y: 6322,
+                label: "Celras"
+            }
+        ]
     }
 
     cacheTiles() {
@@ -62,6 +85,8 @@ class WorldMap {
             this.ctx.moveTo((x + ((this.px - (w / 2)) % grid_spacing) - columns * grid_spacing) * this.z + (w / 2), 0)
             this.ctx.lineTo((x + ((this.px - (w / 2)) % grid_spacing) - columns * grid_spacing) * this.z + (w / 2), h)
             this.ctx.stroke()
+            this.ctx.closePath()
+
         }
 
         const rows = Math.ceil(((h / this.z) / grid_spacing)/2)        // Rows
@@ -70,7 +95,29 @@ class WorldMap {
             this.ctx.moveTo(0, (y + ((this.py - (h / 2)) % grid_spacing) - rows * grid_spacing) * this.z + (h / 2))
             this.ctx.lineTo(w, (y + ((this.py - (h / 2)) % grid_spacing) - rows * grid_spacing) * this.z + (h / 2))
             this.ctx.stroke()
+            this.ctx.closePath()
         }
+
+        this.ctx.fillStyle = "rgba(255,255,255,1)"
+        this.ctx.font = "20pt Arial"
+        
+        const MARKER_RADIUS = 10
+        this.markers.forEach(marker => {
+            const cx = (marker.x + this.px - (w / 2)) * this.z + (w / 2)
+            const cy = (marker.y + this.py - (h / 2)) * this.z + (h / 2)
+            this.ctx.moveTo(cx, cy)
+            this.ctx.arc(cx, cy, MARKER_RADIUS, 0, Math.PI * 2)
+            this.ctx.fill()
+            this.ctx.fillText(marker.label, cx + MARKER_RADIUS, cy - MARKER_RADIUS)
+            this.ctx.closePath()
+
+        })
+
+        const mapped_x = (((mousex - (w / 2)) / this.z) + (w / 2) - this.px)
+        const mapped_y = (((mousey - (h / 2)) / this.z) + (h / 2) - this.py)
+
+        this.ctx.fillText(`X: ${Math.floor(mapped_x)} Z: ${Math.floor(mapped_y)}`, mousex, mousey)
+        this.ctx.closePath()
 
         requestAnimationFrame(() => this.draw())
     }
@@ -86,6 +133,8 @@ const connect = document.getElementById("connect")
 const status_box = document.getElementById("status")
 
 connect.onclick = () => {
+    let open = false
+
     status_box.innerHTML = `<b>Status: Connecting</b>`
     try {
         ws = new WebSocket(host)
@@ -97,9 +146,38 @@ connect.onclick = () => {
         status_box.innerHTML = `<b>Status: Failed to connect</b>`
         console.log(error)
     }
-    ws.onmessage = console.log
+    ws.onmessage = (message) => {
+        const [pid, data] = JSON.parse(message.data)
+        
+        switch (pid) {
+            case 0x00:
+                open = true
+                status_box.innerHTML = `<b>Status: Connected</b>`
+                const tick = () => {
+                    ws.send(JSON.stringify([0x06, null]))
+                    
+                    if (open) {
+                        setTimeout(tick, 1000)
+                    }
+                }
+        
+                tick()
+                break
+            case 0x06:
+                console.log(data)
+        }
+    }
+    ws.onclose = (e) => {
+        open = false
+        status_box.innerHTML = `<b>Status: ${JSON.parse(e.reason)[1]}</b>`
+    }
     ws.onopen = () => {
         status_box.innerHTML = `<b>Status: Authenticating</b>`
+
+        ws.send(JSON.stringify([0x00, {
+            client_id: api_input.value,
+            address: "play.stoneworks.gg"
+        }]))
     }
 }
 
@@ -131,6 +209,8 @@ addEventListener("mouseup", event => {
 })
 
 addEventListener("mousemove", event => {
+    mousex = event.x
+    mousey = event.y
     if (dragging) {
         const dx = event.x - drag_dx
         const dy = event.y - drag_dy
@@ -141,7 +221,7 @@ addEventListener("mousemove", event => {
 })
 
 addEventListener("wheel", event => {
-    zoom_level = Math.max(-2000, Math.min(3000, zoom_level - event.deltaY))
+    zoom_level = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, zoom_level - event.deltaY))
     
     map.z = Math.pow(1.1, (zoom_level/100))
 
