@@ -24,6 +24,21 @@ body {
     margin-left: 1rem;
 }
 
+.cookies {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    width: 30rem;
+
+    background-color: black;
+    border: 10px solid white;
+    padding: 1rem;
+}
+
+.cookies > p {
+    margin-top: 0;
+}
+
 #canvas {
     image-rendering: pixelated;
 }
