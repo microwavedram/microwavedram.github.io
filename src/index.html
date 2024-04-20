@@ -16,14 +16,32 @@
         <div class="api-controls">
             <span><b>API KEY:</b></span>
             <input type="text" id="api-key">
-            <button>Connect</button>
+            <button id="connect">Connect</button>
+            <script defer>
+                const input = document.getElementById("api-key")
+
+                input.value = document.cookie.match(/(?<=api-key=).{0,}(?=;)/gmU)[0]
+            </script>
         </div>
-        <span><b>Status: Disconnected</b></span>
+        <span id="status"><b>Status: Disconnected</b></span>
     </div>
-    <div class="cookies">
+    <div id="cookies">
         <p>This website uses cookies to steal all of your personal information and <i>"improve" your experience</i>. By existing here you consent to your data being sold to the chinese government</p>
-        <button>im cool with my data being sold</button>
-        <button>i dont want my data collected</button>
+        <button id="cookies_close">im cool with my data being sold</button>
+        <button id="cookies_exit">i dont want my data collected</button>
+        <script lang="js" defer>
+            const cookies = document.getElementById("cookies")
+            const close = document.getElementById("cookies_close")
+            const exit = document.getElementById("cookies_exit")
+            
+            if (document.cookie != "") cookies.style.display = "none"
+
+            close.onclick = () => {
+                document.cookie = "api-key=; SameSite=Strict; path=/;"
+                cookies.style.display = "none"
+            }
+            exit.onclick = () => window.location.href = "https://google.com/"
+        </script>
     </div>
 
     <script src="index.js" defer></script>

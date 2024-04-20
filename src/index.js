@@ -1,4 +1,4 @@
-let grid_spacing = 16
+let grid_spacing = 64
 
 class WorldMap {
 
@@ -77,6 +77,32 @@ class WorldMap {
 
 }
 
+let ws;
+
+const host = "ws://nexus.cloudmc.uk:8080"
+
+const api_input = document.getElementById("api-key")
+const connect = document.getElementById("connect")
+const status_box = document.getElementById("status")
+
+connect.onclick = () => {
+    status_box.innerHTML = `<b>Status: Connecting</b>`
+    try {
+        ws = new WebSocket(host)
+    } catch (e) {
+        status_box.innerHTML = `<b>Status: Failed to connect</b>`
+        console.log(error)
+    }
+    ws.onerror = error => {
+        status_box.innerHTML = `<b>Status: Failed to connect</b>`
+        console.log(error)
+    }
+    ws.onmessage = console.log
+    ws.onopen = () => {
+        status_box.innerHTML = `<b>Status: Authenticating</b>`
+    }
+}
+
 
 const canvas = document.getElementById("canvas")
 canvas.imageSmoothingEnabled = false
@@ -119,7 +145,6 @@ addEventListener("wheel", event => {
     
     map.z = Math.pow(1.1, (zoom_level/100))
 
-    console.log(map.z)
     if (map.z >= 12) {
         grid_spacing = 1
     } else if (map.z >= 1.5) {

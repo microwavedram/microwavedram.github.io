@@ -24,18 +24,18 @@ body {
     margin-left: 1rem;
 }
 
-.cookies {
+#cookies {
     position: absolute;
     bottom: 1rem;
     right: 1rem;
     width: 30rem;
 
     background-color: black;
-    border: 10px solid white;
+    border: 2px solid white;
     padding: 1rem;
 }
 
-.cookies > p {
+#cookies > p {
     margin-top: 0;
 }
 
