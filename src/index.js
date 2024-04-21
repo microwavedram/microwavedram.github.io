@@ -2,6 +2,15 @@ const MIN_ZOOM = -4000
 const MAX_ZOOM = 4000
 const DEFAULT_ZOOM = -3000
 
+
+const HOST = "ws://nexus.cloudmc.uk:8080"
+
+const api_input = document.getElementById("api-key")
+const connect = document.getElementById("connect")
+const status_box = document.getElementById("status")
+
+let ws
+
 let grid_spacing = 64 * 32
 
 let mousex = 0;
@@ -48,18 +57,21 @@ class WorldMap {
             }
         ]
 
-        this.claims = [
-            {
-                label: "Seraphia",
-                color: [255, 255, 255],
-                chunks: [
-                    [496, 454],
-                    [497, 454],
-                    [496, 455],
-                    [497, 455],
-                ]
+        this.claims = []
+    }
+
+    cacheClaims() {
+        fetch("claims.json").then(async response => {
+            const claims = await response.json()
+
+            for (const [id, claim] of Object.entries(claims)) {
+                this.claims.push({
+                    label: claim.label,
+                    color: claim.color,
+                    chunks: claim.chunks
+                })
             }
-        ]
+        })
     }
 
     cacheTiles() {
@@ -179,20 +191,54 @@ class WorldMap {
 
 }
 
-let ws;
+addEventListener("mousedown", event => {
+    drag_dx = event.x
+    drag_dy = event.y
+    drag_from_px = map.px
+    drag_from_py = map.py
+    dragging = true
+})
 
-const host = "ws://nexus.cloudmc.uk:8080"
+addEventListener("mouseup", event => {
+    dragging = false
+})
 
-const api_input = document.getElementById("api-key")
-const connect = document.getElementById("connect")
-const status_box = document.getElementById("status")
+addEventListener("mousemove", event => {
+    mousex = event.x
+    mousey = event.y
+    if (dragging) {
+        const dx = event.x - drag_dx
+        const dy = event.y - drag_dy
+
+        map.px = drag_from_px + (dx * (1/map.z))
+        map.py = drag_from_py + (dy * (1/map.z))
+    }
+})
+
+addEventListener("wheel", event => {
+    zoom_level = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, zoom_level - event.deltaY))
+    
+    map.z = Math.pow(1.1, (zoom_level/100))
+
+    if (map.z >= 12) {
+        grid_spacing = 1
+    } else if (map.z >= 1.5) {
+        grid_spacing = 16
+    } else if (map.z > 0.5) {
+        grid_spacing = 64
+    } else {
+        grid_spacing = 64 * 32
+    }
+})
+
+
 
 connect.onclick = () => {
     let open = false
 
     status_box.innerHTML = `<b>Status: Connecting</b>`
     try {
-        ws = new WebSocket(host)
+        ws = new WebSocket(HOST)
     } catch (e) {
         status_box.innerHTML = `<b>Status: Failed to connect</b>`
         console.log(error)
@@ -241,45 +287,7 @@ const canvas = document.getElementById("canvas")
 const map = new WorldMap(canvas)
 map.cacheTiles()
 map.draw()
+map.cacheClaims()
 
 
 
-addEventListener("mousedown", event => {
-    drag_dx = event.x
-    drag_dy = event.y
-    drag_from_px = map.px
-    drag_from_py = map.py
-    dragging = true
-})
-
-addEventListener("mouseup", event => {
-    dragging = false
-})
-
-addEventListener("mousemove", event => {
-    mousex = event.x
-    mousey = event.y
-    if (dragging) {
-        const dx = event.x - drag_dx
-        const dy = event.y - drag_dy
-
-        map.px = drag_from_px + (dx * (1/map.z))
-        map.py = drag_from_py + (dy * (1/map.z))
-    }
-})
-
-addEventListener("wheel", event => {
-    zoom_level = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, zoom_level - event.deltaY))
-    
-    map.z = Math.pow(1.1, (zoom_level/100))
-
-    if (map.z >= 12) {
-        grid_spacing = 1
-    } else if (map.z >= 1.5) {
-        grid_spacing = 16
-    } else if (map.z > 0.5) {
-        grid_spacing = 64
-    } else {
-        grid_spacing = 64 * 32
-    }
-})
