@@ -1,10 +1,19 @@
 const MIN_ZOOM = -4000
 const MAX_ZOOM = 4000
+const DEFAULT_ZOOM = -3000
 
-let grid_spacing = 64
+let grid_spacing = 64 * 32
 
 let mousex = 0;
 let mousey = 0;
+
+let drag_dx = 0
+let drag_dy = 0
+let drag_from_px = 0
+let drag_from_py = 0
+let dragging = false
+
+let zoom_level = 0
 
 class WorldMap {
 
@@ -14,11 +23,11 @@ class WorldMap {
         this.canvas = canvas
         this.ctx = canvas.getContext("2d")
 
-        
+        zoom_level = DEFAULT_ZOOM
 
-        this.z = 1
-        this.px = 0
-        this.py = 0
+        this.z = Math.pow(1.1, (DEFAULT_ZOOM/100))
+        this.px = -(canvas.clientWidth)
+        this.py = -(canvas.clientWidth)
 
         this.tiles = {}
         this.markers = [
@@ -74,8 +83,8 @@ class WorldMap {
     }
 
     moveToWorldPos(wx, wy) {
-        this.px = wx
-        this.py = wy
+        this.px = wx - (this.canvas.clientWidth / 2)
+        this.py = wy - (this.canvas.clientHeight / 2)
     }
 
     draw() {
@@ -98,6 +107,10 @@ class WorldMap {
                 tile.image.naturalWidth * this.z
             )
         }
+
+        this.ctx.webkitImageSmoothingEnabled = true
+        this.ctx.mozImageSmoothingEnabled = true
+        this.ctx.imageSmoothingEnabled = true
 
         this.ctx.strokeStyle = "rgba(255,255,255,0.4)"
         this.ctx.strokeWidth = 1
@@ -156,6 +169,7 @@ class WorldMap {
         const mapped_x = (((mousex - (w / 2)) / this.z) + (w / 2) - this.px)
         const mapped_y = (((mousey - (h / 2)) / this.z) + (h / 2) - this.py)
 
+        this.ctx.fillStyle = "rgba(255,255,255,1)"
         this.ctx.font = "10pt Arial"
         this.ctx.fillText(`(${Math.floor(mapped_x)} ${Math.floor(mapped_y)}) (${Math.floor(mapped_x/16)}, ${Math.floor(mapped_y/16)})`, mousex, mousey)
         this.ctx.closePath()
@@ -228,13 +242,7 @@ const map = new WorldMap(canvas)
 map.cacheTiles()
 map.draw()
 
-let drag_dx = 0
-let drag_dy = 0
-let drag_from_px = 0
-let drag_from_py = 0
-let dragging = false
 
-let zoom_level = 0
 
 addEventListener("mousedown", event => {
     drag_dx = event.x

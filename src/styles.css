@@ -39,15 +39,6 @@ body {
     margin-top: 0;
 }
 
-#canvas {
-    image-rendering: optimizeSpeed;
-    image-rendering: -moz-crisp-edges;
-    image-rendering: -webkit-optimize-contrast;
-    image-rendering: -o-crisp-edges;
-    image-rendering: crisp-edges;
-    -ms-interpolation-mode: nearest-neighbor;
-}
-
 #copyright {
     position: absolute;
     bottom: 0;
