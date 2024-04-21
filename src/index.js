@@ -14,6 +14,8 @@ class WorldMap {
         this.canvas = canvas
         this.ctx = canvas.getContext("2d")
 
+        
+
         this.z = 1
         this.px = 0
         this.py = 0
@@ -64,6 +66,10 @@ class WorldMap {
 
         const w = this.canvas.clientWidth
         const h = this.canvas.clientHeight
+
+        this.ctx.webkitImageSmoothingEnabled = false
+        this.ctx.mozImageSmoothingEnabled = false
+        this.ctx.imageSmoothingEnabled = false
 
         for (const tile of Object.values(this.tiles)) {
             this.ctx.drawImage(
@@ -183,7 +189,6 @@ connect.onclick = () => {
 
 
 const canvas = document.getElementById("canvas")
-canvas.imageSmoothingEnabled = false
 const map = new WorldMap(canvas)
 map.cacheTiles()
 map.draw()
