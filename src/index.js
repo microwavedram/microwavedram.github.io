@@ -120,6 +120,21 @@ class WorldMap {
             )
         }
 
+        this.claims.forEach(claim => {
+            this.ctx.fillStyle = `rgba(${claim.color[0]},${claim.color[1]},${claim.color[2]},0.4)`
+            claim.chunks.forEach(([cx, cy]) => {
+                const rx = cx * 16
+                const ry = cy * 16
+
+                const x1 = (rx + this.px - (w / 2)) * this.z + (w / 2)
+                const y1 = (ry + this.py - (h / 2)) * this.z + (h / 2)
+                const x2 = (rx + this.px + 16 - (w / 2)) * this.z + (w / 2)
+                const y2 = (ry + this.py + 16 - (h / 2)) * this.z + (h / 2)
+
+                this.ctx.fillRect(x1, y1, x1-x2, y1-y2)
+            })
+        })
+
         this.ctx.webkitImageSmoothingEnabled = true
         this.ctx.mozImageSmoothingEnabled = true
         this.ctx.imageSmoothingEnabled = true
@@ -163,20 +178,7 @@ class WorldMap {
 
         })
 
-        this.claims.forEach(claim => {
-            this.ctx.fillStyle = `rgba(${claim.color[0]},${claim.color[1]},${claim.color[2]},0.4)`
-            claim.chunks.forEach(([cx, cy]) => {
-                const rx = cx * 16
-                const ry = cy * 16
-
-                const x1 = (rx + this.px - (w / 2)) * this.z + (w / 2)
-                const y1 = (ry + this.py - (h / 2)) * this.z + (h / 2)
-                const x2 = (rx + this.px + 16 - (w / 2)) * this.z + (w / 2)
-                const y2 = (ry + this.py + 16 - (h / 2)) * this.z + (h / 2)
-
-                this.ctx.fillRect(x1, y1, x1-x2, y1-y2)
-            })
-        })
+        
 
         const mapped_x = (((mousex - (w / 2)) / this.z) + (w / 2) - this.px)
         const mapped_y = (((mousey - (h / 2)) / this.z) + (h / 2) - this.py)
