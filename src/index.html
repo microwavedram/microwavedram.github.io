@@ -17,10 +17,15 @@
             <span><b>API KEY:</b></span>
             <input type="text" id="api-key">
             <button id="connect">Connect</button>
+            <button id="disconnect">Disconnect</button>
             <script defer>
                 const input = document.getElementById("api-key")
 
-                input.value = document.cookie.match(/(?<=api-key=).{0,}(?=;)/gmU)[0]
+                if (document.cookie) {
+                    try {
+                        input.value = document.cookie.toString().match(/(?<=api-key=).{0,}(?=;)/gm)[0]
+                    } catch {}
+                }
             </script>
         </div>
         <span id="status"><b>Status: Disconnected</b></span>

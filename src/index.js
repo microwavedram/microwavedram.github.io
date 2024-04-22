@@ -7,6 +7,7 @@ const HOST = "ws://nexus.cloudmc.uk:8080"
 
 const api_input = document.getElementById("api-key")
 const connect = document.getElementById("connect")
+const disconnect = document.getElementById("disconnect")
 const status_box = document.getElementById("status")
 
 let ws
@@ -39,6 +40,8 @@ class WorldMap {
         this.py = -(canvas.clientWidth)
 
         this.tiles = {}
+        this.thumbs = {}
+
         this.markers = [
             {
                 x: 0,
@@ -56,7 +59,7 @@ class WorldMap {
                 label: "Celras"
             }
         ]
-
+        this.players = {}
         this.claims = []
     }
 
@@ -65,10 +68,48 @@ class WorldMap {
             const claims = await response.json()
 
             for (const [id, claim] of Object.entries(claims)) {
+
+                const computed_edges = {}
+                const edge_mappings = {}
+
+                claim.chunks.forEach(chunk => {
+                    const rx = chunk[0] * 16
+                    const ry = chunk[1] * 16
+
+                    const edges = [
+                        [rx, ry, rx + 16, ry],
+                        [rx, ry, rx, ry + 16],
+                        [rx, ry + 16, rx + 16, ry + 16],
+                        [rx + 16, ry, rx + 16, ry + 16],
+                    ]
+
+                    edges.forEach(pos => {
+                        const i = `${pos[0]},${pos[1]}:${pos[2]},${pos[3]}`
+
+                        edge_mappings[i] = pos
+
+                        if (i in computed_edges) {
+                            computed_edges[i] = false
+                        } else {
+                            computed_edges[i] = true
+                        }
+                    })
+                })
+                
+                const edges = []
+                for (const [edge_string, outer] of Object.entries(computed_edges)) {
+                    if (outer == true) {
+                        edges.push(edge_mappings[edge_string])
+                    }
+                }
+
+                
+
                 this.claims.push({
                     label: claim.label,
                     color: claim.color,
-                    chunks: claim.chunks
+                    chunks: claim.chunks,
+                    edges: edges
                 })
             }
         })
@@ -113,15 +154,19 @@ class WorldMap {
         for (const tile of Object.values(this.tiles)) {
             this.ctx.drawImage(
                 tile.image,
-                (tile.x + this.px - (w / 2)) * this.z + (w / 2),
+                (tile.x + this.px - 2048 - (w / 2)) * this.z + (w / 2),
                 (tile.y + this.py - (h / 2)) * this.z + (h / 2),
                 tile.image.naturalHeight * this.z,
                 tile.image.naturalWidth * this.z
             )
         }
 
+        
         this.claims.forEach(claim => {
             this.ctx.fillStyle = `rgba(${claim.color[0]},${claim.color[1]},${claim.color[2]},0.4)`
+            this.ctx.strokeStyle = `rgba(${claim.color[0]},${claim.color[1]},${claim.color[2]},1)`
+            this.ctx.strokeWidth = 2
+
             claim.chunks.forEach(([cx, cy]) => {
                 const rx = cx * 16
                 const ry = cy * 16
@@ -132,6 +177,18 @@ class WorldMap {
                 const y2 = (ry + this.py + 16 - (h / 2)) * this.z + (h / 2)
 
                 this.ctx.fillRect(x1, y1, x1-x2, y1-y2)
+            })
+
+            
+            claim.edges.forEach(([x1, y1, x2, y2]) => {
+                x1 = (x1 - 16 + this.px - (w / 2)) * this.z + (w / 2)
+                y1 = (y1 - 16 + this.py - (h / 2)) * this.z + (h / 2)
+                x2 = (x2 - 16 + this.px - (w / 2)) * this.z + (w / 2)
+                y2 = (y2 - 16 + this.py - (h / 2)) * this.z + (h / 2)
+                this.ctx.beginPath()
+                this.ctx.moveTo(x1, y1)
+                this.ctx.lineTo(x2, y2)
+                this.ctx.stroke()
             })
         })
 
@@ -175,8 +232,21 @@ class WorldMap {
             this.ctx.fill()
             this.ctx.fillText(marker.label, cx + MARKER_RADIUS, cy - MARKER_RADIUS)
             this.ctx.closePath()
-
         })
+
+        const PLAYER_RADIUS = 2
+        for (const [uuid, player] of Object.entries(this.players)) {
+            const cx = (player.position.x + this.px - (w / 2)) * this.z + (w / 2)
+            const cy = (player.position.z + this.py - (h / 2)) * this.z + (h / 2)
+
+
+            this.ctx.beginPath()
+            this.ctx.moveTo(cx, cy)
+            this.ctx.arc(cx, cy, PLAYER_RADIUS, 0, Math.PI * 2)
+            this.ctx.fill()
+            this.ctx.fillText(player.name, cx + PLAYER_RADIUS, cy - PLAYER_RADIUS)
+            this.ctx.closePath()
+        }
 
         
 
@@ -234,6 +304,12 @@ addEventListener("wheel", event => {
 })
 
 
+disconnect.onclick = () => {
+    if (ws) {
+        ws.close()
+    }
+}
+
 
 connect.onclick = () => {
     let open = false
@@ -250,29 +326,52 @@ connect.onclick = () => {
         console.log(error)
     }
     ws.onmessage = (message) => {
-        const [pid, data] = JSON.parse(message.data)
-        
-        switch (pid) {
-            case 0x00:
-                open = true
-                status_box.innerHTML = `<b>Status: Connected</b>`
-                const tick = () => {
-                    ws.send(JSON.stringify([0x06, null]))
-                    
-                    if (open) {
-                        setTimeout(tick, 1000)
+        try {
+            const [pid, data] = JSON.parse(message.data)
+            switch (pid) {
+                case 0x00:
+                    open = true
+                    status_box.innerHTML = `<b>Status: Connected</b>`
+                    const tick = () => {
+                        ws.send(JSON.stringify([0x06, null]))
+                        
+                        if (open) {
+                            setTimeout(tick, 1000)
+                        }
                     }
-                }
-        
-                tick()
-                break
-            case 0x06:
-                console.log(data)
+            
+                    tick()
+                    break
+                case 0x06:
+                    data.players.forEach(player => {
+                        const uuid = player.uuid
+    
+                        if (!(uuid in map.thumbs)) {
+                            const image = new Image()
+    
+                            image.src = `https://crafatar.com/avatars/${uuid}`
+    
+                            map.thumbs[uuid] = image
+                        }
+                    })
+    
+                    map.players = data.players
+            }
+        } catch (e) {
+            console.log("Something went wrong", message.data)
         }
+        
+        
     }
     ws.onclose = (e) => {
+        let msg = e
+
+        try {
+            msg = JSON.parse(e.reason)[1]
+        } catch {}
+
         open = false
-        status_box.innerHTML = `<b>Status: ${JSON.parse(e.reason)[1]}</b>`
+        status_box.innerHTML = `<b>Status: ${msg}</b>`
     }
     ws.onopen = () => {
         status_box.innerHTML = `<b>Status: Authenticating</b>`
