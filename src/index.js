@@ -154,7 +154,7 @@ class WorldMap {
         for (const tile of Object.values(this.tiles)) {
             this.ctx.drawImage(
                 tile.image,
-                (tile.x + this.px - 2048 - (w / 2)) * this.z + (w / 2),
+                (tile.x + this.px - (w / 2)) * this.z + (w / 2),
                 (tile.y + this.py - (h / 2)) * this.z + (h / 2),
                 tile.image.naturalHeight * this.z,
                 tile.image.naturalWidth * this.z
