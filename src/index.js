@@ -1,7 +1,6 @@
-const MIN_ZOOM = -4000
-const MAX_ZOOM = 4000
-const DEFAULT_ZOOM = -3000
-
+const MIN_ZOOM = -400
+const MAX_ZOOM = 400
+const DEFAULT_ZOOM = -300
 
 const HOST = "ws://nexus.cloudmc.uk:8080"
 
@@ -9,6 +8,9 @@ const api_input = document.getElementById("api-key")
 const connect = document.getElementById("connect")
 const disconnect = document.getElementById("disconnect")
 const status_box = document.getElementById("status")
+
+const heart = new Image()
+heart.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAHBAMAAAA2fErgAAAAD1BMVEUAAAArAgvaJCSsCy/sV0SEKlj7AAAAAXRSTlMAQObYZgAAAChJREFUCNdjYBQQZGAQUVQSYBByAhLCSsoCDIxGhgwMDMICQIKRgQEAKHQCAAUrkucAAAAASUVORK5CYII="
 
 let ws
 
@@ -25,6 +27,45 @@ let dragging = false
 
 let zoom_level = 0
 
+const newimage = src => {const s = new Image(); s.src = src; return s}
+
+const rank_assets = {
+    "axe": newimage("assets/axe.svg"),
+    "neth_pot": newimage("assets/neth_pot.svg"),
+    "pot": newimage("assets/pot.svg"),
+    "smp": newimage("assets/smp.svg"),
+    "sword": newimage("assets/sword.svg"),
+    "uhc": newimage("assets/uhc.svg"),
+    "vannila": newimage("assets/vannila.svg"),
+    "axe": newimage("assets/axe.svg"),
+}
+
+function toColor(num) {
+    num >>>= 0
+
+    let b = num & 0x255
+    let g = (num & 0x2550) >>> 8
+    let r = (num & 0x25500) >>> 16
+
+    return `rgba(${r},${g},${b},1)`
+}
+
+function getTierColor(tier) {
+    switch(tier) {
+        case "HT1": { return "rgb(255, 0, 0, 1)" }
+        case "LT1": { return "rgb(255, 182, 193, 1)" }
+        case "HT2": { return "rgb(255, 165, 0, 1)" }
+        case "LT2": { return "rgb(255, 288, 181, 1)" }
+        case "HT3": { return "rgb(218, 165, 32, 1)" }
+        case "LT3": { return "rgb(238, 232, 170, 1)" }
+        case "HT4": { return "rgb(0, 100, 0, 1)" }
+        case "LT4": { return "rgb(144, 238, 144, 1)" }
+        case "HT5": { return "rgb(128, 128, 128, 1)" }
+        case "LT5": { return "rgb(211, 211, 211, 1)" }
+        default: { return "rgb(211, 211, 211, 1)" }
+    }
+}
+
 class WorldMap {
 
     ctx;
@@ -35,12 +76,14 @@ class WorldMap {
 
         zoom_level = DEFAULT_ZOOM
 
-        this.z = Math.pow(1.1, (DEFAULT_ZOOM/100))
+        this.z = Math.pow(1.1, (DEFAULT_ZOOM/10))
         this.px = -(canvas.clientWidth)
         this.py = -(canvas.clientWidth)
 
         this.tiles = {}
         this.thumbs = {}
+        this.tier_cache = {
+        }
 
         this.markers = [
             {
@@ -59,6 +102,7 @@ class WorldMap {
                 label: "Celras"
             }
         ]
+
         this.players = {}
         this.claims = []
     }
@@ -136,21 +180,45 @@ class WorldMap {
     }
 
     moveToWorldPos(wx, wy) {
-        this.px = wx - (this.canvas.clientWidth / 2)
-        this.py = wy - (this.canvas.clientHeight / 2)
+        this.px = wx - (this.canvas.style.width / 2)
+        this.py = wy - (this.canvas.style.height / 2)
+    }
+
+    cacheThumb(uuid) {
+        const image = new Image()
+    
+        image.src = `https://crafatar.com/avatars/${uuid}`
+
+        this.thumbs[uuid] = image
+    }
+
+    cacheTier(uuid) {
+        fetch({
+            url: `https://mctiers.com/api/rankings/${uuid}`,
+            headers: {
+                "Access-Control-Allow-Origin": "*"
+            }
+        }).then(async response => {
+            this.tier_cache[uuid] = await response.json()
+        })
+    }
+
+    setPixelated(enabled) {
+        this.ctx.webkitImageSmoothingEnabled = !enabled
+        this.ctx.mozImageSmoothingEnabled = !enabled
+        this.ctx.imageSmoothingEnabled = !enabled
     }
 
     draw() {
-        this.canvas.width = document.body.clientWidth;
-        this.canvas.height = document.body.clientHeight;
+        this.canvas.width = document.body.clientWidth * 2
+        this.canvas.height = document.body.clientHeight * 2
+        this.canvas.style.width = document.body.clientWidth
+        this.canvas.style.height = document.body.clientHeight
 
-        const w = this.canvas.clientWidth
-        const h = this.canvas.clientHeight
+        const w = document.body.clientWidth
+        const h = document.body.clientHeight
 
-        this.ctx.webkitImageSmoothingEnabled = false
-        this.ctx.mozImageSmoothingEnabled = false
-        this.ctx.imageSmoothingEnabled = false
-
+        this.setPixelated(true)            
         for (const tile of Object.values(this.tiles)) {
             this.ctx.drawImage(
                 tile.image,
@@ -160,6 +228,8 @@ class WorldMap {
                 tile.image.naturalWidth * this.z
             )
         }
+        this.setPixelated(false)            
+
 
         
         this.claims.forEach(claim => {
@@ -191,10 +261,6 @@ class WorldMap {
                 this.ctx.stroke()
             })
         })
-
-        this.ctx.webkitImageSmoothingEnabled = true
-        this.ctx.mozImageSmoothingEnabled = true
-        this.ctx.imageSmoothingEnabled = true
 
         this.ctx.strokeStyle = "rgba(255,255,255,0.4)"
         this.ctx.strokeWidth = 1
@@ -234,21 +300,70 @@ class WorldMap {
             this.ctx.closePath()
         })
 
-        const PLAYER_RADIUS = 2
+        
+
+        this.ctx.font = "13pt Arial"
         for (const [uuid, player] of Object.entries(this.players)) {
             const cx = (player.position.x + this.px - (w / 2)) * this.z + (w / 2)
             const cy = (player.position.z + this.py - (h / 2)) * this.z + (h / 2)
 
+            const size = 24
 
-            this.ctx.beginPath()
-            this.ctx.moveTo(cx, cy)
-            this.ctx.arc(cx, cy, PLAYER_RADIUS, 0, Math.PI * 2)
-            this.ctx.fill()
-            this.ctx.fillText(player.name, cx + PLAYER_RADIUS, cy - PLAYER_RADIUS)
-            this.ctx.closePath()
+            let mode = ""
+            let tier = 6
+            let pos = 2
+            let r = false
+
+            if (uuid in this.tier_cache) {
+                for (const [m, ranking] of Object.entries(this.tier_cache[uuid].rankings || {})) {
+                    const highest_tier = ranking.peak_tier || ranking.tier 
+                    const highest_pos = ranking.peak_pos || ranking.pos 
+
+                    // console.log(`${ranking.retired ? "R" : ""}${highest_pos == 0 ? "H" : "L"}T${highest_tier} ${m}`)
+
+                    if (highest_tier < tier || (highest_tier == tier & highest_pos < pos)) {
+                        mode = m
+                        tier = highest_tier
+                        pos = highest_pos
+                        r = ranking.retired
+                    }
+                }
+                
+            }
+            
+            let ts = ""
+            if (mode !== "") {
+                ts = `${r ? "R" : ""}${pos == 0 ? "H" : "L"}T${tier}`
+            }
+
+            this.ctx.font = "10pt Arial"
+
+
+            let f = Math.max(0, player.health.toString().length - 1) * 7
+            let f2 = Math.max(0, ts.length - 1) * 7
+            this.ctx.fillStyle = "rgba(255,255,255,1)"
+
+            this.ctx.fillRect(cx - (size / 2) - 2, cy - (size / 2) - 2, size + 4, size + 4)
+            this.ctx.fillText(player.name, cx + (size/1.5) + 3, cy - 2)
+
+            this.setPixelated(true)            
+
+            this.ctx.drawImage(this.thumbs[uuid], cx - (size/2), cy - (size/2), size, size)
+            this.ctx.drawImage(heart, cx + size + f + 4, cy + 2, 13, 13)
+            this.ctx.drawImage(rank_assets[mode] || heart, cx + (size) + 32 + f + f2, cy + 2, 13, 13)
+
+            this.setPixelated(false)            
+
+
+            this.ctx.font = "bold 10pt Arial"
+
+            
+            this.ctx.fillText(`${player.health}`, cx + (size/1.5) + 3, cy + 13)
+            
+            this.ctx.fillStyle = getTierColor(`${pos == 0 ? "H" : "L"}T${tier}`)
+            this.ctx.fillText(ts, cx + (size) + f + 20, cy + 13)
+            
         }
-
-        
 
         const mapped_x = (((mousex - (w / 2)) / this.z) + (w / 2) - this.px)
         const mapped_y = (((mousey - (h / 2)) / this.z) + (h / 2) - this.py)
@@ -262,6 +377,12 @@ class WorldMap {
     }
 
 }
+
+const canvas = document.getElementById("canvas")
+const map = new WorldMap(canvas)
+map.cacheTiles()
+map.draw()
+map.cacheClaims()
 
 addEventListener("mousedown", event => {
     drag_dx = event.x
@@ -290,7 +411,7 @@ addEventListener("mousemove", event => {
 addEventListener("wheel", event => {
     zoom_level = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, zoom_level - event.deltaY))
     
-    map.z = Math.pow(1.1, (zoom_level/100))
+    map.z = Math.pow(1.1, (zoom_level/10))
 
     if (map.z >= 12) {
         grid_spacing = 1
@@ -319,7 +440,7 @@ connect.onclick = () => {
         ws = new WebSocket(HOST)
     } catch (e) {
         status_box.innerHTML = `<b>Status: Failed to connect</b>`
-        console.log(error)
+        console.log(e)
     }
     ws.onerror = error => {
         status_box.innerHTML = `<b>Status: Failed to connect</b>`
@@ -329,14 +450,14 @@ connect.onclick = () => {
         try {
             const [pid, data] = JSON.parse(message.data)
             switch (pid) {
-                case 0x00:
+                case 0x0:
                     open = true
                     status_box.innerHTML = `<b>Status: Connected</b>`
                     const tick = () => {
                         ws.send(JSON.stringify([0x06, null]))
                         
                         if (open) {
-                            setTimeout(tick, 1000)
+                            setTimeout(tick, 100)
                         }
                     }
             
@@ -347,11 +468,7 @@ connect.onclick = () => {
                         const uuid = player.uuid
     
                         if (!(uuid in map.thumbs)) {
-                            const image = new Image()
-    
-                            image.src = `https://crafatar.com/avatars/${uuid}`
-    
-                            map.thumbs[uuid] = image
+                            map.cacheThumb(uuid)
                         }
                     })
     
@@ -376,7 +493,7 @@ connect.onclick = () => {
     ws.onopen = () => {
         status_box.innerHTML = `<b>Status: Authenticating</b>`
 
-        ws.send(JSON.stringify([0x00, {
+        ws.send(JSON.stringify([0x0, {
             client_id: api_input.value,
             address: "play.stoneworks.gg"
         }]))
@@ -384,11 +501,7 @@ connect.onclick = () => {
 }
 
 
-const canvas = document.getElementById("canvas")
-const map = new WorldMap(canvas)
-map.cacheTiles()
-map.draw()
-map.cacheClaims()
+
 
 
 
