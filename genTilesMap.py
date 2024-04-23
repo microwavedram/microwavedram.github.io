@@ -1,5 +1,9 @@
 import os
 import json
 
+t = {}
+
 with open("./src/tiles.json", "w") as f:
-    f.write(json.dumps(os.listdir("./src/tiles")))
+    for lod in os.listdir("./src/tiles"):
+        t[lod] = os.listdir("./src/tiles/" + lod)
+    f.write(json.dumps(t))

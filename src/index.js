@@ -85,6 +85,8 @@ class WorldMap {
         this.tier_cache = {
         }
 
+        this.lod = 3
+
         this.markers = [
             {
                 x: 0,
@@ -161,21 +163,27 @@ class WorldMap {
 
     cacheTiles() {
         fetch("tiles.json").then(async response => {
-            const tilenames = await response.json()
+            const lods = await response.json()
 
-            tilenames.forEach(name => {
-                const image = new Image()
-                image.src = `tiles/${name}`
-                
-                let [x, y] = name.substring(-3).split("_")
-                x = parseInt(x)
-                y = parseInt(y)
-                this.tiles[name] = {
-                    x: x,
-                    y: y,
-                    image: image
-                }
-            })
+            for (const [lod_id, tilenames] of Object.entries(lods)) {
+                this.tiles[lod_id] = {}
+                tilenames.forEach(name => {
+                    const image = new Image()
+                    image.src = `tiles/${lod_id}/${name}`
+                    
+                    let [x, y] = name.substring(-3).split("_")
+                    x = parseInt(x)
+                    y = parseInt(y)
+                    this.tiles[lod_id][name] = {
+                        x: x,
+                        y: y,
+                        image: image,
+                        s: Math.pow(2, parseInt(lod_id.charAt(4)))
+                    }
+                })
+            }
+
+            console.log(this.tiles)
         }).catch(console.error)
     }
 
@@ -219,14 +227,27 @@ class WorldMap {
         const h = document.body.clientHeight
 
         this.setPixelated(true)            
-        for (const tile of Object.values(this.tiles)) {
-            this.ctx.drawImage(
-                tile.image,
-                (tile.x + this.px - (w / 2)) * this.z + (w / 2),
-                (tile.y + this.py - (h / 2)) * this.z + (h / 2),
-                tile.image.naturalHeight * this.z,
-                tile.image.naturalWidth * this.z
-            )
+        if (`lod-${this.lod}` in this.tiles) {
+            for (const tile of Object.values(this.tiles[`lod-${this.lod}`])) {
+                const calc_x = (tile.x + this.px - (w / 2)) * this.z + (w / 2)
+                const calc_y = (tile.y + this.py - (h / 2)) * this.z + (h / 2)
+
+                const sx = tile.image.naturalHeight * this.z * tile.s
+                const sy = tile.image.naturalWidth * this.z * tile.s
+
+                if (calc_x > w) continue
+                if (calc_y > w) continue
+                if (calc_x + sx < 0) continue
+                if (calc_y + sy < 0) continue
+
+                this.ctx.drawImage(
+                    tile.image,
+                    calc_x,
+                    calc_y,
+                    sx,
+                    sy
+                )
+            }
         }
         this.setPixelated(false)            
 
@@ -415,12 +436,19 @@ addEventListener("wheel", event => {
 
     if (map.z >= 12) {
         grid_spacing = 1
+        map.lod = 0
     } else if (map.z >= 1.5) {
         grid_spacing = 16
+        map.lod = 0
     } else if (map.z > 0.5) {
         grid_spacing = 64
+        map.lod = 1
+    } else if (map.z > 0.3) {
+        grid_spacing = 64
+        map.lod = 2
     } else {
         grid_spacing = 64 * 32
+        map.lod = 3
     }
 })
 
