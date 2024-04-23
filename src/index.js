@@ -1,3 +1,5 @@
+// this code is horrific
+
 const MIN_ZOOM = -400
 const MAX_ZOOM = 400
 const DEFAULT_ZOOM = -300
@@ -88,11 +90,6 @@ class WorldMap {
         this.lod = 3
 
         this.markers = [
-            {
-                x: 0,
-                y: 0,
-                label: "World Origin"
-            },
             {
                 x: 8017,
                 y: 7245,
@@ -226,6 +223,12 @@ class WorldMap {
         const w = document.body.clientWidth
         const h = document.body.clientHeight
 
+        this.ctx.fillStyle = "rgba(255,255,255,1)"
+        this.ctx.font = `${Math.floor(this.z * 200)}pt Arial`
+        const calc_x = ( - 2500 + this.px - (w / 2)) * this.z + (w / 2)
+        const calc_y = (this.py - (h / 2)) * this.z + (h / 2)
+        this.ctx.fillText("if you can read this map is still loading", calc_x, calc_y)
+
         this.setPixelated(true)            
         if (`lod-${this.lod}` in this.tiles) {
             for (const tile of Object.values(this.tiles[`lod-${this.lod}`])) {
@@ -249,9 +252,7 @@ class WorldMap {
                 )
             }
         }
-        this.setPixelated(false)            
-
-
+        this.setPixelated(false)
         
         this.claims.forEach(claim => {
             this.ctx.fillStyle = `rgba(${claim.color[0]},${claim.color[1]},${claim.color[2]},0.4)`
@@ -307,9 +308,9 @@ class WorldMap {
         }
 
         this.ctx.fillStyle = "rgba(255,255,255,1)"
-        this.ctx.font = "20pt Arial"
+        this.ctx.font = "10pt Arial"
         
-        const MARKER_RADIUS = 10
+        const MARKER_RADIUS = 5
         this.markers.forEach(marker => {
             const cx = (marker.x + this.px - (w / 2)) * this.z + (w / 2)
             const cy = (marker.y + this.py - (h / 2)) * this.z + (h / 2)

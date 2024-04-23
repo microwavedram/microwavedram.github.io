@@ -45,6 +45,13 @@ body {
     left: 0;
 }
 
+#hi {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    font-size: small;
+}
+
 .container {
     touch-action: none;
     user-select: none;
