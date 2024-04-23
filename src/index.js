@@ -162,7 +162,9 @@ class WorldMap {
         fetch("tiles.json").then(async response => {
             const lods = await response.json()
 
-            for (const [lod_id, tilenames] of Object.entries(lods)) {
+            Object.keys(lods).sort().reverse().forEach(lod_id => {
+                let tilenames = lods[lod_id]
+
                 this.tiles[lod_id] = {}
                 tilenames.forEach(name => {
                     const image = new Image()
@@ -178,9 +180,7 @@ class WorldMap {
                         s: Math.pow(2, parseInt(lod_id.charAt(4)))
                     }
                 })
-            }
-
-            console.log(this.tiles)
+            })
         }).catch(console.error)
     }
 
