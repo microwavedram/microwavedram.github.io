@@ -99,6 +99,11 @@ class WorldMap {
                 x: 6483,
                 y: 6322,
                 label: "Celras"
+            },
+            {
+                x: 2020,
+                y: 2700,
+                label: "The Grand Navy"
             }
         ]
 
@@ -243,13 +248,20 @@ class WorldMap {
                 if (calc_x + sx < 0) continue
                 if (calc_y + sy < 0) continue
 
-                this.ctx.drawImage(
-                    tile.image,
-                    calc_x,
-                    calc_y,
-                    sx,
-                    sy
-                )
+                if (tile.image.complete && tile.image.naturalWidth != 0) {
+                    this.ctx.drawImage(
+                        tile.image,
+                        calc_x,
+                        calc_y,
+                        sx,
+                        sy
+                    )
+                } else {   
+                    this.ctx.font = `${Math.floor(this.z * sx)}pt Arial`
+                    this.ctx.fillText(`<${tile.x},${tile.y}>`,  calc_x, calc_y)
+                }
+
+                
             }
         }
         this.setPixelated(false)
