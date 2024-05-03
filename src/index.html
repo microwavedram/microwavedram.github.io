@@ -11,46 +11,6 @@
     <div class="container">
         <canvas id="canvas"></canvas>
     </div>
-    <div class="header">
-        <h1 class="title">M. A. P. S. - Frontend</h1>
-        <div class="api-controls">
-            <span><b>API KEY:</b></span>
-            <input type="text" id="api-key">
-            <button id="connect">Connect</button>
-            <button id="disconnect">Disconnect</button>
-            <script defer>
-                const input = document.getElementById("api-key")
-
-                if (document.cookie) {
-                    try {
-                        input.value = document.cookie.toString().match(/(?<=api-key=).{0,}(?=;)/gm)[0]
-                    } catch {}
-                }
-            </script>
-        </div>
-        <span id="status"><b>Status: Disconnected</b></span>
-    </div>
-    <div id="cookies">
-        <p>This website uses cookies to steal all of your personal information and <i>"improve" your experience</i>. By existing here you consent to your data being sold to the chinese government</p>
-        <button id="cookies_close">im cool with my data being sold</button>
-        <button id="cookies_exit">i dont want my data collected</button>
-        <script lang="js" defer>
-            const cookies = document.getElementById("cookies")
-            const close = document.getElementById("cookies_close")
-            const exit = document.getElementById("cookies_exit")
-            
-            if (document.cookie != "") cookies.style.display = "none"
-
-            close.onclick = () => {
-                document.cookie = "api-key=; SameSite=Strict; path=/;"
-                cookies.style.display = "none"
-            }
-            exit.onclick = () => window.location.href = "https://google.com/"
-        </script>
-    </div>
-
-    <span id="copyright">Version 2.0.0 - All Rights Reserved @microwavedram</span>
-    <span id="hi">Want your nation on this map? DM @microwavedram (discord) coordinates + a name</span>
 
     <script src="index.js" defer></script>
 </body>
