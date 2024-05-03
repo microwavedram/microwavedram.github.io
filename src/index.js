@@ -1,3 +1,7 @@
+// hi :)
+// you should totally come dm me @microwavedram
+// this code is 1/10 dont judge me too hard
+
 const DEFAULT_ZOOM_LEVEL = -400
 const ZOOM_MIN = -100000
 const ZOOM_MAX = 100000
