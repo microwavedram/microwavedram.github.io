@@ -16,42 +16,6 @@ body {
     color: white;
 }
 
-.title {
-    margin-bottom: 0;
-}
-
-.header {
-    margin-left: 1rem;
-}
-
-#cookies {
-    position: absolute;
-    bottom: 1rem;
-    right: 1rem;
-    width: 30rem;
-
-    background-color: black;
-    border: 2px solid white;
-    padding: 1rem;
-}
-
-#cookies > p {
-    margin-top: 0;
-}
-
-#copyright {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-}
-
-#hi {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    font-size: small;
-}
-
 .container {
     touch-action: none;
     user-select: none;

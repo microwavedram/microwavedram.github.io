@@ -1,548 +1,307 @@
-// this code is horrific
+const DEFAULT_ZOOM_LEVEL = -400
+const ZOOM_MIN = -100000
+const ZOOM_MAX = 100000
+const ZOOM_SENS = 0.1
 
-const MIN_ZOOM = -400
-const MAX_ZOOM = 400
-const DEFAULT_ZOOM = -300
+const loading = new Image()
+loading.src = "assets/loading.png"
 
-const HOST = "ws://nexus.cloudmc.uk:8080"
+class Tile {
+    constructor(x, y, s, url) {
+        this.x = x
+        this.y = y
+        this.s = s
 
-const api_input = document.getElementById("api-key")
-const connect = document.getElementById("connect")
-const disconnect = document.getElementById("disconnect")
-const status_box = document.getElementById("status")
+        this.image = null
+        this.url = url
+        this.hasLoaded = false
+    }
 
-const heart = new Image()
-heart.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAHBAMAAAA2fErgAAAAD1BMVEUAAAArAgvaJCSsCy/sV0SEKlj7AAAAAXRSTlMAQObYZgAAAChJREFUCNdjYBQQZGAQUVQSYBByAhLCSsoCDIxGhgwMDMICQIKRgQEAKHQCAAUrkucAAAAASUVORK5CYII="
-
-let ws
-
-let grid_spacing = 64 * 32
-
-let mousex = 0;
-let mousey = 0;
-
-let drag_dx = 0
-let drag_dy = 0
-let drag_from_px = 0
-let drag_from_py = 0
-let dragging = false
-
-let zoom_level = 0
-
-const newimage = src => {const s = new Image(); s.src = src; return s}
-
-const rank_assets = {
-    "axe": newimage("assets/axe.svg"),
-    "neth_pot": newimage("assets/neth_pot.svg"),
-    "pot": newimage("assets/pot.svg"),
-    "smp": newimage("assets/smp.svg"),
-    "sword": newimage("assets/sword.svg"),
-    "uhc": newimage("assets/uhc.svg"),
-    "vannila": newimage("assets/vannila.svg"),
-    "axe": newimage("assets/axe.svg"),
-}
-
-function toColor(num) {
-    num >>>= 0
-
-    let b = num & 0x255
-    let g = (num & 0x2550) >>> 8
-    let r = (num & 0x25500) >>> 16
-
-    return `rgba(${r},${g},${b},1)`
-}
-
-function getTierColor(tier) {
-    switch(tier) {
-        case "HT1": { return "rgb(255, 0, 0, 1)" }
-        case "LT1": { return "rgb(255, 182, 193, 1)" }
-        case "HT2": { return "rgb(255, 165, 0, 1)" }
-        case "LT2": { return "rgb(255, 288, 181, 1)" }
-        case "HT3": { return "rgb(218, 165, 32, 1)" }
-        case "LT3": { return "rgb(238, 232, 170, 1)" }
-        case "HT4": { return "rgb(0, 100, 0, 1)" }
-        case "LT4": { return "rgb(144, 238, 144, 1)" }
-        case "HT5": { return "rgb(128, 128, 128, 1)" }
-        case "LT5": { return "rgb(211, 211, 211, 1)" }
-        default: { return "rgb(211, 211, 211, 1)" }
+    load() {
+        this.image = new Image()
+        this.image.src = this.url
+        this.hasLoaded = true
     }
 }
 
 class WorldMap {
-
-    ctx;
-
     constructor(canvas) {
+        this.mx = 0
+        this.my = 0
+        
+        this.zoom_level = DEFAULT_ZOOM_LEVEL
+        this.scale_factor = 1
+        this.zoom_x = 0
+        this.zoom_y = 0
+
         this.canvas = canvas
-        this.ctx = canvas.getContext("2d")
-
-        zoom_level = DEFAULT_ZOOM
-
-        this.z = Math.pow(1.1, (DEFAULT_ZOOM/10))
-        this.px = -(canvas.clientWidth)
-        this.py = -(canvas.clientWidth)
-
-        this.tiles = {}
-        this.thumbs = {}
-        this.tier_cache = {
-        }
+        this.context = canvas.getContext("2d")
 
         this.lod = 3
 
-        this.markers = [
-            {
-                x: 8017,
-                y: 7245,
-                label: "Seraphia"
-            },
-            {
-                x: 6483,
-                y: 6322,
-                label: "Celras"
-            },
-            {
-                x: 2020,
-                y: 2700,
-                label: "The Grand Navy"
-            }
-        ]
+        this.mouse_x = 0
+        this.mouse_y = 0
 
-        this.players = {}
+        this.dragging = false
+        
+        this.drag_begin_mouse_x = 0
+        this.drag_begin_mouse_y = 0
+
+        this.drag_begin_map_x = 0
+        this.drag_begin_map_y = 0
+
+        this.tiles = null
+        this.markers = []
         this.claims = []
     }
 
-    cacheClaims() {
-        fetch("claims.json").then(async response => {
-            const claims = await response.json()
+    async #setupTiles() {
+        const tiles = await fetch("tiles.json")
 
-            for (const [id, claim] of Object.entries(claims)) {
+        if (tiles.status == 200) {
+            const tile_map = await tiles.json()
 
-                const computed_edges = {}
-                const edge_mappings = {}
+            this.tiles = {}
 
-                claim.chunks.forEach(chunk => {
-                    const rx = chunk[0] * 16
-                    const ry = chunk[1] * 16
+            for (let [lod, tilenames] of Object.entries(tile_map)) {
+                const lod_id = parseInt(lod.charAt(4))
 
-                    const edges = [
-                        [rx, ry, rx + 16, ry],
-                        [rx, ry, rx, ry + 16],
-                        [rx, ry + 16, rx + 16, ry + 16],
-                        [rx + 16, ry, rx + 16, ry + 16],
-                    ]
+                const out = []
 
-                    edges.forEach(pos => {
-                        const i = `${pos[0]},${pos[1]}:${pos[2]},${pos[3]}`
-
-                        edge_mappings[i] = pos
-
-                        if (i in computed_edges) {
-                            computed_edges[i] = false
-                        } else {
-                            computed_edges[i] = true
-                        }
-                    })
-                })
+                for (let i = 0; i < tilenames.length; i++) {
+                    const tilename = tilenames[i]
+                    const [x, y] = tilename.substring(0, tilename.length - 4).split("_")
+                    
+                    out.push(new Tile(
+                        parseInt(x),
+                        parseInt(y),
+                        1024 * Math.pow(2, lod_id),
+                        `tiles/${lod}/${tilename}`
+                    ))
                 
-                const edges = []
-                for (const [edge_string, outer] of Object.entries(computed_edges)) {
-                    if (outer == true) {
-                        edges.push(edge_mappings[edge_string])
-                    }
                 }
 
-                
+                this.tiles[lod_id] = out
+            }
+        }
+    }
 
-                this.claims.push({
-                    label: claim.label,
-                    color: claim.color,
-                    chunks: claim.chunks,
-                    edges: edges
-                })
+    async #pullResources() {
+        const markers = await fetch("markers.json")
+
+        if (markers.status == 200) {
+            this.markers = await markers.json()
+        }
+
+        const claims = await fetch("claims.json")
+
+        if (claims.status == 200) {
+            this.claims = await claims.json()
+        }
+    }
+
+    init() {
+        const width = document.body.clientWidth
+        const height = document.body.clientHeight
+
+        this.zoom_x = 0
+        this.zoom_y = 0
+
+        this.#setZoomLevel(this.zoom_level)
+        this.#pullResources()
+        this.#setupTiles()
+
+        addEventListener("mousedown", event => {
+            this.drag_begin_mouse_x = event.x
+            this.drag_begin_mouse_y = event.y
+            
+            this.drag_begin_map_x = this.mx
+            this.drag_begin_map_y = this.my
+
+            this.dragging = true
+        })
+
+        addEventListener("mouseup", event => {
+            this.dragging = false
+        })
+
+        addEventListener("mousemove", event => {
+            this.mouse_x = event.x
+            this.mouse_y = event.y
+            
+            
+
+            if (this.dragging) {
+                const dx = event.x - this.drag_begin_mouse_x
+                const dy = event.y - this.drag_begin_mouse_y
+
+                this.mx = this.drag_begin_map_x + dx * (1 / map.scale_factor)
+                this.my = this.drag_begin_map_y + dy * (1 / map.scale_factor)
+            }
+        })
+
+        addEventListener("wheel", event => {
+            this.zoom_level = Math.max(ZOOM_MIN, Math.min(ZOOM_MAX, this.zoom_level - event.deltaY * ZOOM_SENS))
+
+            this.#setZoomLevel(this.zoom_level)
+
+            if (this.zoom_level > 0) {
+                this.lod = 0
+            } else if (this.zoom_level > -100) {
+                this.lod = 1
+            } else if (this.zoom_level > -200) {
+                this.lod = 2
+            } else {
+                this.lod = 3
             }
         })
     }
 
-    cacheTiles() {
-        fetch("tiles.json").then(async response => {
-            const lods = await response.json()
-
-            Object.keys(lods).sort().reverse().forEach(lod_id => {
-                let tilenames = lods[lod_id]
-
-                this.tiles[lod_id] = {}
-                tilenames.forEach(name => {
-                    const image = new Image()
-                    image.src = `tiles/${lod_id}/${name}`
-                    
-                    let [x, y] = name.substring(-3).split("_")
-                    x = parseInt(x)
-                    y = parseInt(y)
-                    this.tiles[lod_id][name] = {
-                        x: x,
-                        y: y,
-                        image: image,
-                        s: Math.pow(2, parseInt(lod_id.charAt(4)))
-                    }
-                })
-            })
-        }).catch(console.error)
+    toScreenSpace([wx, wy]) {
+        return [
+            (wx + this.mx - this.zoom_x) * this.scale_factor + this.zoom_x + (this.width / 2),
+            (wy + this.my - this.zoom_y) * this.scale_factor + this.zoom_y + (this.height / 2),
+        ]
     }
 
-    moveToWorldPos(wx, wy) {
-        this.px = wx - (this.canvas.style.width / 2)
-        this.py = wy - (this.canvas.style.height / 2)
+    toWorldSpace([sx, sy]) {
+        return [
+            (sx - this.zoom_x - (this.width / 2)) / this.scale_factor + this.zoom_x - this.mx,
+            (sy - this.zoom_y - (this.width / 2)) / this.scale_factor + this.zoom_y - this.my,
+        ]
     }
 
-    cacheThumb(uuid) {
-        const image = new Image()
-    
-        image.src = `https://crafatar.com/avatars/${uuid}`
-
-        this.thumbs[uuid] = image
-    }
-
-    cacheTier(uuid) {
-        fetch({
-            url: `https://mctiers.com/api/rankings/${uuid}`,
-            headers: {
-                "Access-Control-Allow-Origin": "*"
-            }
-        }).then(async response => {
-            this.tier_cache[uuid] = await response.json()
-        })
-    }
-
-    setPixelated(enabled) {
-        this.ctx.webkitImageSmoothingEnabled = !enabled
-        this.ctx.mozImageSmoothingEnabled = !enabled
-        this.ctx.imageSmoothingEnabled = !enabled
+    isOnScreen([sx, sy]) {
+        return sx >= 0 && sx <= this.width && sy >= 0 && sy <= this.height
     }
 
     draw() {
-        this.canvas.width = document.body.clientWidth * 2
-        this.canvas.height = document.body.clientHeight * 2
-        this.canvas.style.width = document.body.clientWidth
-        this.canvas.style.height = document.body.clientHeight
+        this.width = document.body.clientWidth
+        this.height = document.body.clientHeight
 
-        const w = document.body.clientWidth
-        const h = document.body.clientHeight
+        this.canvas.width = this.width
+        this.canvas.height = this.height
 
-        this.ctx.fillStyle = "rgba(255,255,255,1)"
-        this.ctx.font = `${Math.floor(this.z * 200)}pt Arial`
-        const calc_x = ( - 2500 + this.px - (w / 2)) * this.z + (w / 2)
-        const calc_y = (this.py - (h / 2)) * this.z + (h / 2)
-        this.ctx.fillText("if you can read this map is still loading", calc_x, calc_y)
+        this.context.fillStyle = "rgba(255,255,255,1)"
+        this.context.strokeStyle = "rgba(255,255,255,1)"
 
-        this.setPixelated(true)            
-        if (`lod-${this.lod}` in this.tiles) {
-            for (const tile of Object.values(this.tiles[`lod-${this.lod}`])) {
-                const calc_x = (tile.x + this.px - (w / 2)) * this.z + (w / 2)
-                const calc_y = (tile.y + this.py - (h / 2)) * this.z + (h / 2)
+        if (this.tiles != null) {
+            const tiles = this.tiles[this.lod]
 
-                const sx = tile.image.naturalHeight * this.z * tile.s
-                const sy = tile.image.naturalWidth * this.z * tile.s
+            this.#setInterpolation(false)
+            for (let i = 0; i < tiles.length; i++) {
+                const tile = tiles[i];
 
-                if (calc_x > w) continue
-                if (calc_y > w) continue
-                if (calc_x + sx < 0) continue
-                if (calc_y + sy < 0) continue
-
-                if (tile.image.complete && tile.image.naturalWidth != 0) {
-                    this.ctx.drawImage(
-                        tile.image,
-                        calc_x,
-                        calc_y,
-                        sx,
-                        sy
-                    )
-                } else {   
-                    this.ctx.font = `${Math.floor(this.z * sx)}pt Arial`
-                    this.ctx.fillText(`<${tile.x},${tile.y}>`,  calc_x, calc_y)
-                }
-
-                
-            }
-        }
-        this.setPixelated(false)
-        
-        this.claims.forEach(claim => {
-            this.ctx.fillStyle = `rgba(${claim.color[0]},${claim.color[1]},${claim.color[2]},0.4)`
-            this.ctx.strokeStyle = `rgba(${claim.color[0]},${claim.color[1]},${claim.color[2]},1)`
-            this.ctx.strokeWidth = 2
-
-            claim.chunks.forEach(([cx, cy]) => {
-                const rx = cx * 16
-                const ry = cy * 16
-
-                const x1 = (rx + this.px - (w / 2)) * this.z + (w / 2)
-                const y1 = (ry + this.py - (h / 2)) * this.z + (h / 2)
-                const x2 = (rx + this.px + 16 - (w / 2)) * this.z + (w / 2)
-                const y2 = (ry + this.py + 16 - (h / 2)) * this.z + (h / 2)
-
-                this.ctx.fillRect(x1, y1, x1-x2, y1-y2)
-            })
-
-            
-            claim.edges.forEach(([x1, y1, x2, y2]) => {
-                x1 = (x1 - 16 + this.px - (w / 2)) * this.z + (w / 2)
-                y1 = (y1 - 16 + this.py - (h / 2)) * this.z + (h / 2)
-                x2 = (x2 - 16 + this.px - (w / 2)) * this.z + (w / 2)
-                y2 = (y2 - 16 + this.py - (h / 2)) * this.z + (h / 2)
-                this.ctx.beginPath()
-                this.ctx.moveTo(x1, y1)
-                this.ctx.lineTo(x2, y2)
-                this.ctx.stroke()
-            })
-        })
-
-        this.ctx.strokeStyle = "rgba(255,255,255,0.4)"
-        this.ctx.strokeWidth = 1
-
-        // Columns
-        const columns = Math.ceil(((w / this.z) / grid_spacing)/2)
-        for (let x = 0; x < w / this.z + grid_spacing; x += grid_spacing) {
-            this.ctx.beginPath()
-            this.ctx.moveTo((x + ((this.px - (w / 2)) % grid_spacing) - columns * grid_spacing) * this.z + (w / 2), 0)
-            this.ctx.lineTo((x + ((this.px - (w / 2)) % grid_spacing) - columns * grid_spacing) * this.z + (w / 2), h)
-            this.ctx.stroke()
-            this.ctx.closePath()
-
-        }
-
-        const rows = Math.ceil(((h / this.z) / grid_spacing)/2)        // Rows
-        for (let y = 0; y < h / this.z + grid_spacing; y += grid_spacing) {
-            this.ctx.beginPath()
-            this.ctx.moveTo(0, (y + ((this.py - (h / 2)) % grid_spacing) - rows * grid_spacing) * this.z + (h / 2))
-            this.ctx.lineTo(w, (y + ((this.py - (h / 2)) % grid_spacing) - rows * grid_spacing) * this.z + (h / 2))
-            this.ctx.stroke()
-            this.ctx.closePath()
-        }
-
-        this.ctx.fillStyle = "rgba(255,255,255,1)"
-        this.ctx.font = "10pt Arial"
-        
-        const MARKER_RADIUS = 5
-        this.markers.forEach(marker => {
-            const cx = (marker.x + this.px - (w / 2)) * this.z + (w / 2)
-            const cy = (marker.y + this.py - (h / 2)) * this.z + (h / 2)
-            this.ctx.beginPath()
-            this.ctx.moveTo(cx, cy)
-            this.ctx.arc(cx, cy, MARKER_RADIUS, 0, Math.PI * 2)
-            this.ctx.fill()
-            this.ctx.fillText(marker.label, cx + MARKER_RADIUS, cy - MARKER_RADIUS)
-            this.ctx.closePath()
-        })
-
-        
-
-        this.ctx.font = "13pt Arial"
-        for (const [uuid, player] of Object.entries(this.players)) {
-            const cx = (player.position.x + this.px - (w / 2)) * this.z + (w / 2)
-            const cy = (player.position.z + this.py - (h / 2)) * this.z + (h / 2)
-
-            const size = 24
-
-            let mode = ""
-            let tier = 6
-            let pos = 2
-            let r = false
-
-            if (uuid in this.tier_cache) {
-                for (const [m, ranking] of Object.entries(this.tier_cache[uuid].rankings || {})) {
-                    const highest_tier = ranking.peak_tier || ranking.tier 
-                    const highest_pos = ranking.peak_pos || ranking.pos 
-
-                    // console.log(`${ranking.retired ? "R" : ""}${highest_pos == 0 ? "H" : "L"}T${highest_tier} ${m}`)
-
-                    if (highest_tier < tier || (highest_tier == tier & highest_pos < pos)) {
-                        mode = m
-                        tier = highest_tier
-                        pos = highest_pos
-                        r = ranking.retired
+                const [x1, y1] = this.toScreenSpace([tile.x, tile.y])
+    
+                if (x1 > -tile.s * this.scale_factor && x1 < this.width && y1 > -tile.s * this.scale_factor && y1 < this.height) {
+                    if (tile.hasLoaded) {
+                        if (tile.image.complete && tile.image.naturalWidth > 0) {
+                            this.context.drawImage(
+                                tile.image,
+                                x1,
+                                y1,
+                                tile.s * this.scale_factor,
+                                tile.s * this.scale_factor,
+                            )
+                        } else {
+                            this.context.drawImage(
+                                loading,
+                                x1,
+                                y1,
+                                tile.s * this.scale_factor,
+                                tile.s * this.scale_factor,
+                            )
+                        }
+                    } else {
+                        tile.load()
                     }
                 }
-                
             }
-            
-            let ts = ""
-            if (mode !== "") {
-                ts = `${r ? "R" : ""}${pos == 0 ? "H" : "L"}T${tier}`
-            }
-
-            this.ctx.font = "10pt Arial"
-
-
-            let f = Math.max(0, player.health.toString().length - 1) * 7
-            let f2 = Math.max(0, ts.length - 1) * 7
-            this.ctx.fillStyle = "rgba(255,255,255,1)"
-
-            this.ctx.fillRect(cx - (size / 2) - 2, cy - (size / 2) - 2, size + 4, size + 4)
-            this.ctx.fillText(player.name, cx + (size/1.5) + 3, cy - 2)
-
-            this.setPixelated(true)            
-
-            this.ctx.drawImage(this.thumbs[uuid], cx - (size/2), cy - (size/2), size, size)
-            this.ctx.drawImage(heart, cx + size + f + 4, cy + 2, 13, 13)
-            this.ctx.drawImage(rank_assets[mode] || heart, cx + (size) + 32 + f + f2, cy + 2, 13, 13)
-
-            this.setPixelated(false)            
-
-
-            this.ctx.font = "bold 10pt Arial"
-
-            
-            this.ctx.fillText(`${player.health}`, cx + (size/1.5) + 3, cy + 13)
-            
-            this.ctx.fillStyle = getTierColor(`${pos == 0 ? "H" : "L"}T${tier}`)
-            this.ctx.fillText(ts, cx + (size) + f + 20, cy + 13)
-            
+            this.#setInterpolation(true)
         }
 
-        const mapped_x = (((mousex - (w / 2)) / this.z) + (w / 2) - this.px)
-        const mapped_y = (((mousey - (h / 2)) / this.z) + (h / 2) - this.py)
+        if (this.markers.length > 0) {
+            for (let i = 0; i < this.markers.length; i++) {
+                const { name, pos } = this.markers[i]
+                
+                this.#drawCircle(5, pos)
+                this.#drawText(name, pos, [8, 3])
+            }
+        }
 
-        this.ctx.fillStyle = "rgba(255,255,255,1)"
-        this.ctx.font = "10pt Arial"
-        this.ctx.fillText(`(${Math.floor(mapped_x)} ${Math.floor(mapped_y)}) (${Math.floor(mapped_x/16)}, ${Math.floor(mapped_y/16)})`, mousex, mousey)
-        this.ctx.closePath()
+        
+        this.context.strokeStyle = "rgba(255,255,255,1)"
+        if (Object.keys(this.claims).length > 0) {
+            for (const [name, positions] of Object.entries(this.claims)) {
+                this.context.fillStyle = "rgba(255,255,255,0.5)"
+
+                this.context.beginPath()
+                this.context.moveTo(...this.toScreenSpace(positions[0]))
+        
+                positions.forEach(position => {
+                    this.context.lineTo(...this.toScreenSpace(position))
+                })
+                this.context.lineTo(...this.toScreenSpace(positions[0]))
+
+                let ax = positions.map(position => position[0]).reduce((acc, x) => acc + x) / positions.length
+                let ay = positions.map(position => position[1]).reduce((acc, x) => acc + x) / positions.length
+
+                if (this.lod == 0) {
+                    this.context.stroke()
+                } else {
+                    this.context.fill()
+                }
+
+                this.context.fillStyle = "rgba(255,255,255,1)"
+
+                if (this.lod <= 1) {
+                    this.#drawCircle(5, [ax, ay])
+                    this.#drawText(name, [ax, ay], [8, 3])
+                }
+                
+            }
+        }
 
         requestAnimationFrame(() => this.draw())
     }
 
+    #setZoomLevel(level) {
+        this.scale_factor = Math.pow(1.1, (level / 10))
+    }
+
+    #setInterpolation(state) {
+        this.context.webkitImageSmoothingEnabled = state
+        this.context.mozImageSmoothingEnabled = state
+        this.context.imageSmoothingEnabled = state
+    }
+
+    #drawImage(image, [wx, wy], [w, h]) {
+        const [sx, sy] = this.toScreenSpace([wx, wy])
+
+        this.context.drawImage(image, sx, sy, w, h)
+    }
+
+    #drawCircle(radius, [wx, wy]) {
+        const [sx, sy] = this.toScreenSpace([wx, wy])
+
+        this.context.beginPath()
+        this.context.moveTo(sx, sy)
+        this.context.arc(sx, sy, radius, 0, Math.PI * 2)
+        this.context.fill()
+    }
+
+    #drawText(text, [wx, wy], offset) {
+        offset = offset || [0, 0]
+
+        const [sx, sy] = this.toScreenSpace([wx, wy])
+
+        this.context.fillText(text, sx + offset[0], sy + offset[1])
+    }
 }
 
 const canvas = document.getElementById("canvas")
+
 const map = new WorldMap(canvas)
-map.cacheTiles()
+map.init()
 map.draw()
-map.cacheClaims()
-
-addEventListener("mousedown", event => {
-    drag_dx = event.x
-    drag_dy = event.y
-    drag_from_px = map.px
-    drag_from_py = map.py
-    dragging = true
-})
-
-addEventListener("mouseup", event => {
-    dragging = false
-})
-
-addEventListener("mousemove", event => {
-    mousex = event.x
-    mousey = event.y
-    if (dragging) {
-        const dx = event.x - drag_dx
-        const dy = event.y - drag_dy
-
-        map.px = drag_from_px + (dx * (1/map.z))
-        map.py = drag_from_py + (dy * (1/map.z))
-    }
-})
-
-addEventListener("wheel", event => {
-    zoom_level = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, zoom_level - event.deltaY))
-    
-    map.z = Math.pow(1.1, (zoom_level/10))
-
-    if (map.z >= 12) {
-        grid_spacing = 1
-        map.lod = 0
-    } else if (map.z >= 1.5) {
-        grid_spacing = 16
-        map.lod = 0
-    } else if (map.z > 0.5) {
-        grid_spacing = 64
-        map.lod = 1
-    } else if (map.z > 0.3) {
-        grid_spacing = 64
-        map.lod = 2
-    } else {
-        grid_spacing = 64 * 32
-        map.lod = 3
-    }
-})
-
-
-disconnect.onclick = () => {
-    if (ws) {
-        ws.close()
-    }
-}
-
-
-connect.onclick = () => {
-    let open = false
-
-    status_box.innerHTML = `<b>Status: Connecting</b>`
-    try {
-        ws = new WebSocket(HOST)
-    } catch (e) {
-        status_box.innerHTML = `<b>Status: Failed to connect</b>`
-        console.log(e)
-    }
-    ws.onerror = error => {
-        status_box.innerHTML = `<b>Status: Failed to connect</b>`
-        console.log(error)
-    }
-    ws.onmessage = (message) => {
-        try {
-            const [pid, data] = JSON.parse(message.data)
-            switch (pid) {
-                case 0x0:
-                    open = true
-                    status_box.innerHTML = `<b>Status: Connected</b>`
-                    const tick = () => {
-                        ws.send(JSON.stringify([0x06, null]))
-                        
-                        if (open) {
-                            setTimeout(tick, 100)
-                        }
-                    }
-            
-                    tick()
-                    break
-                case 0x06:
-                    data.players.forEach(player => {
-                        const uuid = player.uuid
-    
-                        if (!(uuid in map.thumbs)) {
-                            map.cacheThumb(uuid)
-                        }
-                    })
-    
-                    map.players = data.players
-            }
-        } catch (e) {
-            console.log("Something went wrong", message.data)
-        }
-        
-        
-    }
-    ws.onclose = (e) => {
-        let msg = e
-
-        try {
-            msg = JSON.parse(e.reason)[1]
-        } catch {}
-
-        open = false
-        status_box.innerHTML = `<b>Status: ${msg}</b>`
-    }
-    ws.onopen = () => {
-        status_box.innerHTML = `<b>Status: Authenticating</b>`
-
-        ws.send(JSON.stringify([0x0, {
-            client_id: api_input.value,
-            address: "play.stoneworks.gg"
-        }]))
-    }
-}
-
-
-
-
-
-
