@@ -10,6 +10,9 @@ const ZOOM_SENS = 0.1
 const loading = new Image()
 loading.src = "assets/loading.png"
 
+const crosshair = document.getElementById("crosshair")
+const rightheader = document.getElementById("rightheader")
+
 class Tile {
     constructor(x, y, s, url) {
         this.x = x
@@ -116,6 +119,8 @@ class WorldMap {
         this.#setupTiles()
 
         addEventListener("mousedown", event => {
+            if (event.target != this.canvas && event.target != rightheader) return
+
             this.drag_begin_mouse_x = event.x
             this.drag_begin_mouse_y = event.y
             
@@ -145,6 +150,8 @@ class WorldMap {
         })
 
         addEventListener("wheel", event => {
+            if (event.target != this.canvas && event.target != rightheader) return
+
             this.zoom_level = Math.max(ZOOM_MIN, Math.min(ZOOM_MAX, this.zoom_level - event.deltaY * ZOOM_SENS))
 
             this.#setZoomLevel(this.zoom_level)
@@ -171,7 +178,7 @@ class WorldMap {
     toWorldSpace([sx, sy]) {
         return [
             (sx - this.zoom_x - (this.width / 2)) / this.scale_factor + this.zoom_x - this.mx,
-            (sy - this.zoom_y - (this.width / 2)) / this.scale_factor + this.zoom_y - this.my,
+            (sy - this.zoom_y - (this.height / 2)) / this.scale_factor + this.zoom_y - this.my,
         ]
     }
 
@@ -263,9 +270,25 @@ class WorldMap {
                     this.#drawCircle(5, [ax, ay])
                     this.#drawText(name, [ax, ay], [8, 3])
                 }
-                
             }
         }
+
+        this.context.strokeStyle = "rgba(255,255,255,1)"
+        this.context.strokeWidth = 2
+        const TL = this.toScreenSpace([-11838.51672363281, -9999.27808535099])
+        const BR = this.toScreenSpace([8161.48327636719, 10000.72191464901])
+
+        this.context.beginPath()
+        this.context.moveTo(TL[0], TL[1])
+        this.context.lineTo(BR[0], TL[1])
+        this.context.lineTo(BR[0], BR[1])
+        this.context.lineTo(TL[0], BR[1])
+        this.context.lineTo(TL[0], TL[1])
+        this.context.stroke()
+
+
+        const pos = this.toWorldSpace([this.width / 2, this.height / 2])
+        crosshair.innerHTML = `(${pos.map(Math.floor)})`
 
         requestAnimationFrame(() => this.draw())
     }

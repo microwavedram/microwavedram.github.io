@@ -2,6 +2,16 @@
     font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
     line-height: 1.5;
     font-weight: 400;
+    zoom: reset;
+}
+
+a {
+    color: mediumaquamarine;
+    text-decoration: none;
+}
+
+a:hover {
+    color: lightblue
 }
 
 body {
@@ -25,4 +35,146 @@ body {
     height: 100%;
 
     z-index: -1;
+}
+
+.leftheader {
+    position: absolute;
+    margin: 1rem;
+    width: 50%;
+}
+
+.leftheader > h1 {
+    border-left: 5px solid white;
+    padding-left: 10px;
+    margin: 0
+}
+
+.leftheader > p {
+    margin: 0;
+}
+
+.rightheader {
+    position: absolute;
+
+    height: 80%;
+    width: 50%;
+    right: 0;
+
+    display: flex;
+
+    justify-content: right;
+}
+
+#nation {
+    display: none;
+
+    background-color: #111111;
+    margin: 20px;
+    border: 5px solid black;
+    border-style: inset;
+    padding: 1rem;
+
+    width: 15vw;
+
+    overflow-y: scroll;
+
+}
+
+.nationsearch {
+    background-color: #111111;
+    margin: 20px;
+    border: 5px solid black;
+    border-style: inset;
+    padding: 1rem;
+    flex-grow: 0;
+
+    height: fit-content;
+
+    width: 15vw;
+}
+
+.nationsearch > h1 {
+    margin-bottom: 0;
+    margin-top: -10px;
+}
+
+.nationsearch > p {
+    margin: 0;
+    margin-top: -10px;
+}
+
+#nation > span {
+    margin: 0;
+    margin-bottom: 10px;
+    padding: 0;
+
+    border-left: 5px solid white;
+    padding-left: 10px;
+}
+
+#nation > button {
+    margin-bottom: 10px;
+    display: inline-block;
+    outline: none;
+}
+
+#nation > .stats {
+    margin: 0;
+    margin-bottom: 10px;
+}
+
+#nation > .stats > p {
+    margin: 0;
+}
+
+.crosshair {
+    position: absolute;
+    left: calc(50% - 5px);
+    top: calc(50% - 5px);
+
+    width: 10px;
+    height: 10px;
+
+    border-radius: 5px;
+
+    background-color: #fff;
+}
+
+.crosshair > p {
+    position: relative;
+    margin: 0;
+    margin-left: 13px;
+    margin-top: -8px;
+    width: 100px;
+}
+
+.tx-center {
+    text-align: center;
+}
+
+.nomargin {
+    margin: 0;
+}
+
+table {
+    word-break: break-all;
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid white;
+
+    max-height: 500px;
+
+}
+
+th, td {
+    padding: 3px;
+    border: 1px solid gray;
+    text-align: center;
+    text-overflow: ellipsis;
+    min-width: 0;
+}
+
+th {
+    padding: 0;
+    background-color: #bbb;
 }

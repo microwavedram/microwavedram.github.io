@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>M. A. P. S. - Frontend</title>
 
     <link rel="stylesheet" href="styles.css">
@@ -10,8 +10,57 @@
 <body>
     <div class="container">
         <canvas id="canvas"></canvas>
+        <div class="crosshair">
+            <p id="crosshair"></p>
+        </div>
+    </div>
+
+    <div class="leftheader">
+        <h1>Stoneworks World Map</h1>
+        <p>Version 2.0.1</p>
+    </div>
+
+    <div class="rightheader" id="rightheader">
+        <div class="nationsearch">
+            <h1 class="nomargin">Nation Search</h1>
+            <p>Search by nation or by player</p>
+            
+            <span>Search: </span> 
+            <input type="text" name="search" id="search">
+            <ul id="search_results">
+                
+            </ul>
+        </div>
+        <div id="nation">
+            <h1 class="tx-center nomargin">${Nation}</h1>
+    
+            <span>Statistics</span>
+            <button class="collapsible">Show / Hide</button>
+            <div class="stats">
+                <p>Name: ${Nation}</p>
+                <p>Players: ${Players}</p>
+                <p>Chunks: ${Chunks}</p>
+                <p>Balance: ${Balance}</p>
+            </div>
+            
+            <hr>
+
+            <span>Players</span>
+            <button class="collapsible">Show / Hide</button>
+            <table>
+                <tr>
+                    <th>Player</th>
+                    <th>Rank</th>
+                    <th>Tiered</th>
+                </tr>
+            </table>
+            <hr>
+        </div>
     </div>
 
     <script src="index.js" defer></script>
+    <script src="nation.js" defer></script>
+    <script src="prevent_zoom.js"></script>
+    <script src="collapse.js"></script>
 </body>
 </html>
