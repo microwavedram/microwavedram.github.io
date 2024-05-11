@@ -3,6 +3,11 @@
     line-height: 1.5;
     font-weight: 400;
     zoom: reset;
+
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 a {
@@ -20,10 +25,20 @@ body {
     margin: 0;
     width: 100%;
     height: 100%;
-    overflow: hidden;
+    overflow-y: hidden;
 
     background-color: black;
     color: white;
+}
+
+#search_results {
+    max-height: 80%;
+    overflow: scroll;
+    scrollbar-width: none;
+}
+
+#search_results::-webkit-scrollbar {
+    display: none;
 }
 
 .container {
@@ -77,7 +92,11 @@ body {
     width: 15vw;
 
     overflow-y: scroll;
+    scrollbar-width: none;
+}
 
+#nation::-webkit-scrollbar {
+    display: none;
 }
 
 .nationsearch {

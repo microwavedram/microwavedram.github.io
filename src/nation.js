@@ -16,6 +16,15 @@ function search(string) {
     for (const [land_name, land_data] of Object.entries(lands)) {
         if (land_name.toLowerCase().includes(string.toLowerCase())) {
             names_map[land_name] = true
+            continue
+        }
+
+        if (land_data.players) {
+            if (land_name == "Seraphia") {
+            }
+            if (land_data.players.map(name => name.toLowerCase()).some(name => name.includes(string.toLowerCase()))) {
+                names_map[land_name] = true
+            }
         }
     }
 
@@ -63,6 +72,8 @@ function setSelectedNation(nation_name) {
         <th>Tiered</th>
     </tr>
     ${rows}`
+
+    nation_div.children.item(9).name = nation_name
 }
 
 function trigger_search(event) {

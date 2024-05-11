@@ -114,7 +114,7 @@ class WorldMap {
         this.zoom_x = 0
         this.zoom_y = 0
 
-        this.#setZoomLevel(this.zoom_level)
+        this.setZoomLevel(this.zoom_level)
         this.#pullResources()
         this.#setupTiles()
 
@@ -154,7 +154,7 @@ class WorldMap {
 
             this.zoom_level = Math.max(ZOOM_MIN, Math.min(ZOOM_MAX, this.zoom_level - event.deltaY * ZOOM_SENS))
 
-            this.#setZoomLevel(this.zoom_level)
+            this.setZoomLevel(this.zoom_level)
 
             if (this.zoom_level > 0) {
                 this.lod = 0
@@ -293,7 +293,7 @@ class WorldMap {
         requestAnimationFrame(() => this.draw())
     }
 
-    #setZoomLevel(level) {
+    setZoomLevel(level) {
         this.scale_factor = Math.pow(1.1, (level / 10))
     }
 
@@ -327,8 +327,30 @@ class WorldMap {
     }
 }
 
+
+
 const canvas = document.getElementById("canvas")
 
 const map = new WorldMap(canvas)
 map.init()
 map.draw()
+
+
+addEventListener("click", e => {
+    if (e.target.id == "teleport") {
+        const positions = map.claims[e.target.name]
+
+        if (positions) {
+            let ax = positions.map(position => position[0]).reduce((acc, x) => acc + x) / positions.length
+            let ay = positions.map(position => position[1]).reduce((acc, x) => acc + x) / positions.length
+
+            
+            map.zoom_level = 100
+            map.setZoomLevel(100)
+            map.lod = 0
+
+            map.mx = -ax
+            map.my = -ay + 10
+        }
+    }
+})
