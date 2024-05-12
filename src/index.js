@@ -241,37 +241,67 @@ class WorldMap {
             }
         }
 
-        
-        this.context.strokeStyle = "rgba(255,255,255,1)"
         if (Object.keys(this.claims).length > 0) {
-            for (const [name, positions] of Object.entries(this.claims)) {
-                this.context.fillStyle = "rgba(255,255,255,0.5)"
+            for (const [name, claim] of Object.entries(this.claims)) {
+
+                const { chunks, color } = claim
+
+                let root_c = color.join(",")
+
+                let ax = chunks.map(position => position[0]).reduce((acc, x) => acc + x) / chunks.length
+                let ay = chunks.map(position => position[1]).reduce((acc, x) => acc + x) / chunks.length
+
+                this.context.strokeStyle = `rgba(${root_c},1)`
+                this.context.fillStyle = `rgba(${root_c},0.5)`
 
                 this.context.beginPath()
-                this.context.moveTo(...this.toScreenSpace(positions[0]))
+                this.context.moveTo(...this.toScreenSpace(chunks[0]))
         
-                positions.forEach(position => {
+                chunks.forEach(position => {
                     this.context.lineTo(...this.toScreenSpace(position))
                 })
-                this.context.lineTo(...this.toScreenSpace(positions[0]))
+                this.context.lineTo(...this.toScreenSpace(chunks[0]))
 
-                let ax = positions.map(position => position[0]).reduce((acc, x) => acc + x) / positions.length
-                let ay = positions.map(position => position[1]).reduce((acc, x) => acc + x) / positions.length
 
                 if (this.lod == 0) {
                     this.context.stroke()
                 } else {
                     this.context.fill()
                 }
-
-                this.context.fillStyle = "rgba(255,255,255,1)"
-
+                
+                
                 if (this.lod <= 1) {
+                    let [ tlx, tly ] = this.toScreenSpace([ax, ay])
+                    const { width } = this.context.measureText(name)
+
+                    tlx += 7
+                    tly += 5
+
+                    const h = 12
+                    
+                    const p = this.context.fillStyle
+
+                    this.context.fillStyle = `rgba(0,0,0,1)`
+                    this.context.beginPath()
+                    this.context.moveTo(tlx, tly)
+                    this.context.lineTo(tlx + width + 1, tly)
+                    this.context.lineTo(tlx + width + 1, tly - h)
+                    this.context.lineTo(tlx, tly - h)
+                    this.context.lineTo(tlx, tly)
+                    this.context.fill()
+
+                    this.context.fillStyle = `rgba(255,255,255,1)`
+
                     this.#drawCircle(5, [ax, ay])
                     this.#drawText(name, [ax, ay], [8, 3])
+
+
+                    
                 }
             }
         }
+
+        this.context.font = "italic small-caps bold 20px arial"
 
         this.context.strokeStyle = "rgba(255,255,255,1)"
         this.context.strokeWidth = 2
