@@ -368,7 +368,7 @@ map.draw()
 
 addEventListener("click", e => {
     if (e.target.id == "teleport") {
-        const positions = map.claims[e.target.name]
+        const positions = map.claims[e.target.name].chunks
 
         if (positions) {
             let ax = positions.map(position => position[0]).reduce((acc, x) => acc + x) / positions.length
