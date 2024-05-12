@@ -24,8 +24,8 @@ for lod in range(1, 4):
     lw = math.ceil(dx / lod_tile_size)
     lh = math.ceil(dy / lod_tile_size)
 
-    for tx in range(0, lw):
-        for ty in range(0, lh):
+    for tx in range(-1, lw + 1):
+        for ty in range(-1, lh + 1):
             print(tx, ty)
             # LOD_TILE
             img = Image.new("RGBA", (lod_tile_size, lod_tile_size))
