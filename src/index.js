@@ -60,6 +60,15 @@ class WorldMap {
         this.tiles = null
         this.markers = []
         this.claims = []
+
+        this.zooming = false
+        this.zoom_1x = 0
+        this.zoom_1y = 0
+        this.zoom_2x = 0
+        this.zoom_2y = 0
+
+        this.zoomdelta_begin = 0
+        this.zoom_prev = 0
     }
 
     async #setupTiles() {
@@ -130,19 +139,79 @@ class WorldMap {
             this.dragging = true
         })
 
+        addEventListener("touchstart", event => {
+            if (event.target != this.canvas && event.target != rightheader) return
+
+            if (event.touches.length == 2) {
+                this.zoom_prev = this.zoom_level
+                this.zooming = true
+                this.zoom_1x = event.touches[0].screenX
+                this.zoom_1y = event.touches[0].screenY
+                this.zoom_2x = event.touches[1].screenX
+                this.zoom_2y = event.touches[1].screenY
+
+                this.zoomdelta_begin = Math.sqrt(
+                    (this.zoom_1x-this.zoom_2x) * (this.zoom_1x-this.zoom_2x) + 
+                    (this.zoom_1y-this.zoom_2y) * (this.zoom_1y-this.zoom_2y)
+                )
+                return
+            }
+
+            this.drag_begin_mouse_x = event.touches[0].screenX
+            this.drag_begin_mouse_y = event.touches[0].screenY
+            
+            this.drag_begin_map_x = this.mx
+            this.drag_begin_map_y = this.my
+
+            this.dragging = true
+        })
+
         addEventListener("mouseup", event => {
+            this.dragging = false
+        })
+        
+        addEventListener("touchend", event => {
+            this.zooming = false
+            this.dragging = false
+        })
+
+        addEventListener("touchcancel", event => {
             this.dragging = false
         })
 
         addEventListener("mousemove", event => {
+            event.preventDefault()
+
+
             this.mouse_x = event.x
             this.mouse_y = event.y
             
-            
-
             if (this.dragging) {
                 const dx = event.x - this.drag_begin_mouse_x
                 const dy = event.y - this.drag_begin_mouse_y
+
+                this.mx = this.drag_begin_map_x + dx * (1 / map.scale_factor)
+                this.my = this.drag_begin_map_y + dy * (1 / map.scale_factor)
+            }
+        })
+
+        addEventListener("touchmove", event => {
+            this.mouse_x = event.touches[0].screenX
+            this.mouse_y = event.touches[0].screenY
+            
+            if (this.zooming && event.touches.length == 2) {
+                const delta = this.zoomdelta_begin - Math.sqrt(
+                    (event.touches[0].screenX-event.touches[1].screenX) * (event.touches[0].screenX-event.touches[1].screenX) + 
+                    (event.touches[0].screenY-event.touches[1].screenY) * (event.touches[0].screenY-event.touches[1].screenY)
+                )
+
+                this.zoom_level = this.zoom_prev - delta * 0.5
+                this.setZoomLevel(this.zoom_prev - delta * 0.5)
+            }
+
+            if (this.dragging) {
+                const dx = event.touches[0].screenX - this.drag_begin_mouse_x
+                const dy = event.touches[0].screenY - this.drag_begin_mouse_y
 
                 this.mx = this.drag_begin_map_x + dx * (1 / map.scale_factor)
                 this.my = this.drag_begin_map_y + dy * (1 / map.scale_factor)
@@ -156,15 +225,7 @@ class WorldMap {
 
             this.setZoomLevel(this.zoom_level)
 
-            if (this.zoom_level > 0) {
-                this.lod = 0
-            } else if (this.zoom_level > -100) {
-                this.lod = 1
-            } else if (this.zoom_level > -200) {
-                this.lod = 2
-            } else {
-                this.lod = 3
-            }
+            
         })
     }
 
@@ -324,6 +385,16 @@ class WorldMap {
     }
 
     setZoomLevel(level) {
+        if (level > 0) {
+            this.lod = 0
+        } else if (level > -100) {
+            this.lod = 1
+        } else if (level > -200) {
+            this.lod = 2
+        } else {
+            this.lod = 3
+        }
+
         this.scale_factor = Math.pow(1.1, (level / 10))
     }
 
