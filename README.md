@@ -2,6 +2,7 @@
 *its been 4 weeks and we still dont have an official map*
 
 The current aim: make a useful and functional dynamic map
+
 The future aim (post official map): make a more useful and better performing dynamic map
 
 ## How I got the data
