@@ -9,4 +9,4 @@ The future aim (post official map): make a more useful and better performing dyn
   - spend litteral 2 hours writing code to parse the garbage data *(litterally raw html)*
 - @albsi on discord created a combine map based on submitted map mod exports, kindly they let me use it
 
-### *want to use my parsed data without violating the license? dm me and you will permission*
+***want to use my parsed data without violating the license? dm me and you will recieve permission***
