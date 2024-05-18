@@ -41,6 +41,13 @@ body {
     display: none;
 }
 
+.panel {
+    background-color: #111111;
+    border: 5px solid black;
+    border-style: inset;
+    padding: 1rem;
+}
+
 .container {
     touch-action: none;
     user-select: none;
@@ -55,7 +62,7 @@ body {
 .leftheader {
     position: absolute;
     margin: 1rem;
-    width: 50%;
+    margin-right: 2rem;
 }
 
 .leftheader > h1 {
@@ -98,11 +105,7 @@ body {
 #nation {
     display: none;
 
-    background-color: #111111;
     margin: 20px;
-    border: 5px solid black;
-    border-style: inset;
-    padding: 1rem;
 
     width: 15vw;
 
@@ -115,11 +118,7 @@ body {
 }
 
 .nationsearch {
-    background-color: #111111;
     margin: 20px;
-    border: 5px solid black;
-    border-style: inset;
-    padding: 1rem;
     flex-grow: 0;
 
     height: fit-content;

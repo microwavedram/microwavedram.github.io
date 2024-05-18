@@ -256,6 +256,8 @@ class WorldMap {
 
         this.context.fillStyle = "rgba(255,255,255,1)"
         this.context.strokeStyle = "rgba(255,255,255,1)"
+        this.context.font = "15px Arial"
+
 
         if (this.tiles != null) {
             const tiles = this.tiles[this.lod]
@@ -338,9 +340,7 @@ class WorldMap {
                     tlx += 7
                     tly += 5
 
-                    const h = 12
-                    
-                    const p = this.context.fillStyle
+                    const h = 15
 
                     this.context.fillStyle = `rgba(0,0,0,1)`
                     this.context.beginPath()
@@ -362,7 +362,6 @@ class WorldMap {
             }
         }
 
-        this.context.font = "italic small-caps bold 20px arial"
 
         this.context.strokeStyle = "rgba(255,255,255,1)"
         this.context.strokeWidth = 2
