@@ -9,6 +9,20 @@
     <title>M. A. P. S. - Frontend</title>
 
     <link rel="stylesheet" href="styles.css">
+
+    <script>
+        var _paq = window._paq = window._paq || [];
+        /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+        _paq.push(['trackPageView']);
+        _paq.push(['enableLinkTracking']);
+        (function() {
+          var u="https://microwavedram.matomo.cloud/";
+          _paq.push(['setTrackerUrl', u+'matomo.php']);
+          _paq.push(['setSiteId', '1']);
+          var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+          g.async=true; g.src='https://cdn.matomo.cloud/microwavedram.matomo.cloud/matomo.js'; s.parentNode.insertBefore(g,s);
+        })();
+      </script>
 </head>
 <body>
     <div class="container">
@@ -18,11 +32,13 @@
         </div>
     </div>
 
-    <div class="panel leftheader">
-        <h1>Stoneworks World Map</h1>
-        <p>Version 2.0.4 / contact @microwavedram</p>
-        <p><a href="https://discord.gg/3JETjeaZqj"><span style="font-weight: bold;">Join my discord</span></a> <span style="font-weight: bold;">Thanks for the support 👍</span></p>
-        <p>Also: <a href="https://youtu.be/9jyesercWfo">[Video] How I beat the developers</a></p>
+    <div class="leftheader">
+        <div class="panel" id="title">
+            <h1>Stoneworks World Map</h1>
+            <p>Version 2.0.4 / contact @microwavedram</p>
+            <p><a href="https://discord.gg/3JETjeaZqj"><span style="font-weight: bold;">Join my discord</span></a> <span style="font-weight: bold;">Thanks for the support 👍</span></p>
+            <p>Also: <a href="https://youtu.be/9jyesercWfo">[Video] How I beat the developers</a></p>
+        </div>
     </div>
 
     <div class="rightheader" id="rightheader">
