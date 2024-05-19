@@ -63,15 +63,18 @@ body {
     position: absolute;
     margin: 1rem;
     margin-right: 2rem;
+    display: flex;
+    flex-direction: column;
+    
 }
 
-.leftheader > h1 {
+#title > h1 {
     border-left: 5px solid white;
     padding-left: 10px;
     margin: 0
 }
 
-.leftheader > p {
+#title > p {
     margin: 0;
 }
 
