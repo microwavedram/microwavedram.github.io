@@ -435,6 +435,7 @@ const map = new WorldMap(canvas)
 map.init()
 map.draw()
 
+window.map = map
 
 addEventListener("click", e => {
     if (e.target.id == "teleport") {
