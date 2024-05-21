@@ -105,6 +105,12 @@ body {
     }
 }
 
+#hide_header {
+    position: absolute;
+    right: 0.5rem;
+    transform: translate(0, -0.5rem);
+}
+
 #nation {
     display: none;
 

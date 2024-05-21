@@ -427,7 +427,10 @@ class WorldMap {
     }
 }
 
+const header = document.getElementsByClassName("leftheader")[0]
+const hide_header_button = document.getElementById("hide_header")
 
+hide_header_button.onclick = () => header.style.display = "none"
 
 const canvas = document.getElementById("canvas")
 
