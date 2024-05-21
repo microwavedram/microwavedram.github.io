@@ -69,6 +69,19 @@ class WorldMap {
 
         this.zoomdelta_begin = 0
         this.zoom_prev = 0
+
+        this.hovered_nation = null
+        this.selected_nation = null
+        this.click_nation = null
+        this.click_x = 0
+        this.click_y = 0
+
+        this.quadtree = new Quadtree({
+            x: -10000,
+            y: -10000,
+            width: 20000,
+            height: 20000,
+        })
     }
 
     async #setupTiles() {
@@ -113,6 +126,23 @@ class WorldMap {
 
         if (claims.status == 200) {
             this.claims = await claims.json()
+
+            for (const [name, claim] of Object.entries(this.claims)) {
+                const { chunks, color } = claim
+
+                let ax = chunks.map(position => position[0]).reduce((acc, x) => acc + x) / chunks.length
+                let ay = chunks.map(position => position[1]).reduce((acc, x) => acc + x) / chunks.length
+
+                const QUAD_RADIUS = 1
+
+                this.quadtree.insert({
+                    x: ax - QUAD_RADIUS,
+                    y: ay - QUAD_RADIUS,
+                    width: QUAD_RADIUS * 2,
+                    height: QUAD_RADIUS * 2,
+                    id: name
+                })
+            }
         }
     }
 
@@ -130,6 +160,8 @@ class WorldMap {
         addEventListener("mousedown", event => {
             if (event.target != this.canvas && event.target != rightheader) return
 
+            this.click_nation = this.hovered_nation
+
             this.drag_begin_mouse_x = event.x
             this.drag_begin_mouse_y = event.y
             
@@ -141,6 +173,8 @@ class WorldMap {
 
         addEventListener("touchstart", event => {
             if (event.target != this.canvas && event.target != rightheader) return
+
+
 
             if (event.touches.length == 2) {
                 this.zoom_prev = this.zoom_level
@@ -157,6 +191,8 @@ class WorldMap {
                 return
             }
 
+            this.click_nation = this.hovered_nation
+
             this.drag_begin_mouse_x = event.touches[0].screenX
             this.drag_begin_mouse_y = event.touches[0].screenY
             
@@ -168,15 +204,36 @@ class WorldMap {
 
         addEventListener("mouseup", event => {
             this.dragging = false
+
+            if (this.hovered_nation == this.click_nation && this.drag_begin_mouse_x == this.mouse_x && this.drag_begin_mouse_y == this.mouse_y) {
+                this.selected_nation = this.click_nation
+                setSelectedNation(this.selected_nation)
+            }
+
+            this.click_nation = null
         })
         
         addEventListener("touchend", event => {
             this.zooming = false
             this.dragging = false
+
+            if (this.hovered_nation == this.click_nation && this.drag_begin_mouse_x == this.mouse_x && this.drag_begin_mouse_y == this.mouse_y) {
+                this.selected_nation = this.click_nation
+                setSelectedNation(this.selected_nation)
+            }
+            this.click_nation = null
         })
 
         addEventListener("touchcancel", event => {
+            this.zooming = false
             this.dragging = false
+
+            if (this.hovered_nation == this.click_nation && this.drag_begin_mouse_x == this.mouse_x && this.drag_begin_mouse_y == this.mouse_y) {
+                this.selected_nation = this.click_nation
+                setSelectedNation(this.selected_nation)
+            }
+
+            this.click_nation = null
         })
 
         addEventListener("mousemove", event => {
@@ -259,6 +316,10 @@ class WorldMap {
         this.context.font = "15px Arial"
 
 
+        const crosshair_pos = this.toWorldSpace([this.width / 2, this.height / 2])
+        const mouse_world_pos = this.toWorldSpace([this.mouse_x, this.mouse_y])
+        crosshair.innerHTML = `(${crosshair_pos.map(Math.floor)})`
+
         if (this.tiles != null) {
             const tiles = this.tiles[this.lod]
 
@@ -304,6 +365,27 @@ class WorldMap {
             }
         }
 
+        const elements = this.quadtree.retrieve({
+            x: mouse_world_pos[0] - 10,
+            y: mouse_world_pos[1] - 10,
+            width: 20,
+            height: 20,
+        })
+        const lookup = {}
+
+        let closest = undefined
+        let current_dist = 10000
+
+        const map = new Set(elements.map(element => {
+            const dist = Math.pow(element.x-mouse_world_pos[0], 2) + Math.pow(element.y-mouse_world_pos[1], 2)
+
+            if (dist < current_dist) {
+                closest = element.id
+                current_dist = dist
+            }
+
+            return element.id
+        }))
         if (Object.keys(this.claims).length > 0) {
             for (const [name, claim] of Object.entries(this.claims)) {
 
@@ -311,11 +393,21 @@ class WorldMap {
 
                 let root_c = color.join(",")
 
+                if (name == closest) {
+                    root_c = "255,255,255"
+                    this.hovered_nation = name
+                }
+                if (name == this.selected_nation) {
+                    root_c = "0,255,255"
+                }
+
                 let ax = chunks.map(position => position[0]).reduce((acc, x) => acc + x) / chunks.length
                 let ay = chunks.map(position => position[1]).reduce((acc, x) => acc + x) / chunks.length
 
                 this.context.strokeStyle = `rgba(${root_c},1)`
                 this.context.fillStyle = `rgba(${root_c},0.5)`
+
+                
 
                 this.context.beginPath()
                 this.context.moveTo(...this.toScreenSpace(chunks[0]))
@@ -351,7 +443,7 @@ class WorldMap {
                     this.context.lineTo(tlx, tly)
                     this.context.fill()
 
-                    this.context.fillStyle = `rgba(255,255,255,1)`
+                    this.context.fillStyle = `rgba(${root_c},1)`
 
                     this.#drawCircle(5, [ax, ay])
                     this.#drawText(name, [ax, ay], [8, 3])
@@ -377,8 +469,9 @@ class WorldMap {
         this.context.stroke()
 
 
-        const pos = this.toWorldSpace([this.width / 2, this.height / 2])
-        crosshair.innerHTML = `(${pos.map(Math.floor)})`
+        
+
+        
 
         requestAnimationFrame(() => this.draw())
     }

@@ -1,6 +1,7 @@
 const nation_div = document.getElementById("nation")
 const search_box = document.getElementById("search")
 const search_results = document.getElementById("search_results")
+const unselect = document.getElementById("unselect")
 lands = {}
 
 fetch("lands_pub.json").then(async res => {
@@ -85,8 +86,8 @@ addEventListener("click", e => {
         setSelectedNation(e.target.innerHTML)
     }
 })
-
-search_box.onchange = trigger_search
+unselect.onclick = () => setSelectedNation(undefined)
+search_box.onchange = trigger_search    
 search_box.onkeypress = trigger_search
 search_box.onpaste = trigger_search
 search_box.oninput = trigger_search
