@@ -1,3 +1,3 @@
-addEventListener("wheel", e => {
-    if (e.ctrlKey) e.preventDefault();
-});
+addEventListener("wheel", (e) => {
+	if (e.ctrlKey) e.preventDefault()
+})
