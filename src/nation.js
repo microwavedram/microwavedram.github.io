@@ -3,11 +3,18 @@ const search_box = document.getElementById("search")
 const search_results = document.getElementById("search_results")
 const unselect = document.getElementById("unselect")
 lands = {}
+tiers = {}
 
 fetch("lands_pub.json").then(async (res) => {
 	const data = await res.json()
 
 	lands = data
+})
+
+fetch("pub_tiers.json").then(async (res) => {
+	const data = await res.json()
+
+	tiers = data
 })
 
 function search(string) {
@@ -55,13 +62,21 @@ function setSelectedNation(nation_name) {
 	rows = ""
 
 	if (nation.players) {
+		let f = "Owner"
 		nation.players.forEach((player) => {
+			let tier = "unknown"
+
+			if (player in tiers) {
+				tier = tiers[player]
+			}
+
 			rows += `<tr>
                 <td>${player}</td>
-                <td>unknown</td>
-                <td>unknown</td>
+                <td>${f}</td>
+                <td>${tier}</td>
                 </tr>
             </tr>`
+			f = "unknown"
 		})
 	}
 

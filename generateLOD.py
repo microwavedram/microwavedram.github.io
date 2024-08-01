@@ -5,7 +5,7 @@ from PIL import Image
 
 images = {}
 
-mi_x, mi_y, ma_x, ma_y = -11264, -10752, 9216, 9728
+mi_x, mi_y, ma_x, ma_y = -24576, -24576, 24576, 24576
 dx, dy = ma_x - mi_x, ma_y - mi_y
 
 rx, ry = dx / 1024, dy / 1024
@@ -35,6 +35,7 @@ for lod in range(1, 4):
                     key = f"{mi_x + tx * lod_tile_size + sx * 1024}_{mi_y + ty * lod_tile_size + sy * 1024}"
 
                     if not key in images:
+                        print(f"not found {key}")
                         continue
 
                     tile = images[key]

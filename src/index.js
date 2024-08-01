@@ -325,7 +325,6 @@ class WorldMap {
 		})
 
 		addEventListener("keydown", (event) => {
-			console.log(event.key)
 			if (event.key == "-") {
 				this.setZoomLevel(
 					Math.max(
