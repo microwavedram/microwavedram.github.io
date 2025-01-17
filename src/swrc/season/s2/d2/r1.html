@@ -1,0 +1,4759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formula B - R1</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <style>
+        :root {
+            --background-color: #252627;
+            --background-seccondary: #424344;
+            --primary-color: #fff;
+            --accent: #f5f567;
+        }
+
+        html {
+            font-family: "JetBrains Mono", serif;
+            font-optical-sizing: auto;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        p {
+            margin: 0
+        }
+
+        body {
+            background-color: var(--background-color);
+            color: var(--primary-color);
+            margin: 0;
+        }
+
+        table {
+            width: 100%;
+        }
+
+        table > tr > th, td {
+            border: 1px solid var(--background-seccondary);
+            padding: 0.1em;
+        }
+
+        h1 {
+            margin: 0;
+            padding: 0;
+        }
+
+        .tr_alt_1 {
+            background-color: #1a1b1c;
+        }
+
+        .tr_alt_2 {
+            background-color: #1d1e1e;
+        }
+
+        .inset {
+            margin: 0.5em;
+        }
+
+        .tooltip {
+            position: relative;
+        }
+
+        .tooltip .tooltip-text {
+            visibility: hidden;
+
+            background-color: var(--background-color);
+            border: 1px solid var(--background-seccondary);
+            color: #fff;
+            text-align: center;
+            position: absolute;
+            width: calc(200% + 3px);
+            top: 100%;
+            left: 0%;
+            transform: translateX(-25% - 1px);
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 1;
+        }
+
+        .tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .pit_last::before {
+            margin-left: -5px;
+            position: relative;
+            content: "";
+            border-left: 0.2em solid var(--accent);
+            padding-right: calc(4px);
+        }
+    </style>
+
+    <div class="header inset">
+        <h1>Formula B - R1</h1>
+    </div>
+
+    <hr>
+
+    <table id="table">
+        <tr>
+            <th>Pos</th>
+            <th>Name</th>
+            
+                <th>Lap 1</th>
+            
+                <th>Lap 2</th>
+            
+                <th>Lap 3</th>
+            
+                <th>Lap 4</th>
+            
+                <th>Lap 5</th>
+            
+                <th>Lap 6</th>
+            
+                <th>Lap 7</th>
+            
+                <th>Lap 8</th>
+            
+                <th>Lap 9</th>
+            
+                <th>Lap 10</th>
+            
+                <th>Lap 11</th>
+            
+                <th>Lap 12</th>
+            
+                <th>Lap 13</th>
+            
+                <th>Lap 14</th>
+            
+                <th>Lap 15</th>
+            
+                <th>Lap 16</th>
+            
+                <th>Lap 17</th>
+            
+                <th>Lap 18</th>
+            
+                <th>Lap 19</th>
+            
+                <th>Lap 20</th>
+            
+                <th>Lap 21</th>
+            
+                <th>Lap 22</th>
+            
+            <th>Flap</th>
+            <th>Average</th>
+            <th>Std.Dev</th>
+        </tr>
+        
+            
+                <tr class="tr_alt_2">
+            
+                <td>1</td>
+                <td>Niszara</td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        45.8
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>5806.0</p>
+                            
+                                <p>452.0</p>
+                            
+                                <p>1952.0</p>
+                            
+                                <p>1348.0</p>
+                            
+                                <p>153.0</p>
+                            
+                                <p>2448.0</p>
+                            
+                                <p>596.0</p>
+                            
+                                <p>153.0</p>
+                            
+                                <p>758.0</p>
+                            
+                                <p>1695.0</p>
+                            
+                                <p>49.0</p>
+                            
+                                <p>396.0</p>
+                            
+                                <p>1605.0</p>
+                            
+                                <p>396.0</p>
+                            
+                                <p>403.0</p>
+                            
+                                <p>47.0</p>
+                            
+                                <p>898.0</p>
+                            
+                                <p>105.0</p>
+                            
+                                <p>2098.0</p>
+                            
+                                <p>1550.0</p>
+                            
+                                <p>799.0</p>
+                            
+                                <p>1848.0</p>
+                            
+                                <p>2704.0</p>
+                            
+                                <p>840.0</p>
+                            
+                                <p>556.0</p>
+                            
+                                <p>3189.0</p>
+                            
+                                <p>1606.0</p>
+                            
+                                <p>898.0</p>
+                            
+                                <p>1951.0</p>
+                            
+                                <p>2350.0</p>
+                            
+                                <p>448.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        45.7
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>558.0</p>
+                            
+                                <p>1953.0</p>
+                            
+                                <p>1549.0</p>
+                            
+                                <p>599.0</p>
+                            
+                                <p>152.0</p>
+                            
+                                <p>2752.0</p>
+                            
+                                <p>2196.0</p>
+                            
+                                <p>985.0</p>
+                            
+                                <p>565.0</p>
+                            
+                                <p>597.0</p>
+                            
+                                <p>654.0</p>
+                            
+                                <p>97.0</p>
+                            
+                                <p>2050.0</p>
+                            
+                                <p>550.0</p>
+                            
+                                <p>1888.0</p>
+                            
+                                <p>863.0</p>
+                            
+                                <p>492.0</p>
+                            
+                                <p>1211.0</p>
+                            
+                                <p>436.0</p>
+                            
+                                <p>161.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        44.2
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>2009.0</p>
+                            
+                                <p>1299.0</p>
+                            
+                                <p>539.0</p>
+                            
+                                <p>1560.0</p>
+                            
+                                <p>1800.0</p>
+                            
+                                <p>3203.0</p>
+                            
+                                <p>2245.0</p>
+                            
+                                <p>1105.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        45.25
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>1362.0</p>
+                            
+                                <p>1251.0</p>
+                            
+                                <p>1598.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        47.5
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>264.0</p>
+                            
+                                <p>42.0</p>
+                            
+                                <p>4357.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        44.75
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>1062.0</p>
+                            
+                                <p>1143.0</p>
+                            
+                                <p>2952.0</p>
+                            
+                                <p>957.0</p>
+                            
+                                <p>49.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        43.9
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>1261.0</p>
+                            
+                                <p>1098.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        49.15
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>1267.0</p>
+                            
+                                <p>1348.0</p>
+                            
+                                <p>202.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip pit_next">
+                    
+                        61.4
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>1566.0</p>
+                            
+                                <p>786.0</p>
+                            
+                                <p>1161.0</p>
+                            
+                                <p>2550.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip pit_last">
+                    
+                        45.15
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip pit_next">
+                    
+                        61.7
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>114.0</p>
+                            
+                                <p>1985.0</p>
+                            
+                                <p>0.0</p>
+                            
+                                <p>1365.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip pit_last">
+                    
+                        43.4
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>400.0</p>
+                            
+                                <p>1006.0</p>
+                            
+                                <p>306.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        46.85
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>659.0</p>
+                            
+                                <p>251.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        47.8
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>2109.0</p>
+                            
+                                <p>98.0</p>
+                            
+                                <p>3551.0</p>
+                            
+                                <p>1237.0</p>
+                            
+                                <p>203.0</p>
+                            
+                                <p>513.0</p>
+                            
+                                <p>1695.0</p>
+                            
+                                <p>43.0</p>
+                            
+                                <p>159.0</p>
+                            
+                                <p>903.0</p>
+                            
+                                <p>1348.0</p>
+                            
+                                <p>94.0</p>
+                            
+                                <p>2957.0</p>
+                            
+                                <p>585.0</p>
+                            
+                                <p>965.0</p>
+                            
+                                <p>1251.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        46.7
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>761.0</p>
+                            
+                                <p>952.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip pit_next">
+                    
+                        67.85
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>3016.0</p>
+                            
+                                <p>1845.0</p>
+                            
+                                <p>2145.0</p>
+                            
+                                <p>210.0</p>
+                            
+                                <p>945.0</p>
+                            
+                                <p>1138.0</p>
+                            
+                                <p>711.0</p>
+                            
+                                <p>1501.0</p>
+                            
+                                <p>154.0</p>
+                            
+                                <p>1234.0</p>
+                            
+                                <p>2316.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip pit_last">
+                    
+                        44.5
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>2561.0</p>
+                            
+                                <p>2135.0</p>
+                            
+                                <p>214.0</p>
+                            
+                                <p>98.0</p>
+                            
+                                <p>55.0</p>
+                            
+                                <p>440.0</p>
+                            
+                                <p>749.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        45.2
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>157.0</p>
+                            
+                                <p>751.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        45.25
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>2708.0</p>
+                            
+                                <p>261.0</p>
+                            
+                                <p>1099.0</p>
+                            
+                                <p>146.0</p>
+                            
+                                <p>1192.0</p>
+                            
+                                <p>259.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        45.65
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>1108.0</p>
+                            
+                                <p>247.0</p>
+                            
+                                <p>302.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        47.25
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>208.0</p>
+                            
+                                <p>2696.0</p>
+                            
+                                <p>3551.0</p>
+                            
+                                <p>153.0</p>
+                            
+                                <p>848.0</p>
+                            
+                                <p>104.0</p>
+                            
+                                <p>550.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        59.4
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                        </span>
+                    </td>
+                
+                <td>43.4</td>
+                <td>48.85</td>
+                <td>6.75</td>
+            </tr>
+        
+            
+                <tr class="tr_alt_1">
+            
+                <td>2</td>
+                <td>Neurion58</td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        51.35
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        50.3
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>715.0</p>
+                            
+                                <p>139.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip pit_next">
+                    
+                        64.9
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip pit_last">
+                    
+                        44.5
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        45.8
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>400.0</p>
+                            
+                                <p>1709.0</p>
+                            
+                                <p>1648.0</p>
+                            
+                                <p>2089.0</p>
+                            
+                                <p>1566.0</p>
+                            
+                                <p>298.0</p>
+                            
+                                <p>501.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        48.5
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip pit_next">
+                    
+                        63.15
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>498.0</p>
+                            
+                                <p>2510.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip pit_last">
+                    
+                        44.25
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        49.85
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        48.65
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>449.0</p>
+                            
+                                <p>2650.0</p>
+                            
+                                <p>265.0</p>
+                            
+                                <p>653.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        45.05
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>818.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        48.35
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        47.1
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        47.5
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>1706.0</p>
+                            
+                                <p>1654.0</p>
+                            
+                                <p>1300.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        51.1
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        48.15
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>1059.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        47.9
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>653.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        51.85
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>2009.0</p>
+                            
+                                <p>941.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        49.0
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>245.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        53.2
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>2461.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        47.75
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>349.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        46.75
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>197.0</p>
+                            
+                                <p>1097.0</p>
+                            
+                                <p>2304.0</p>
+                            
+                                <p>448.0</p>
+                            
+                                <p>864.0</p>
+                            
+                                <p>2084.0</p>
+                            
+                        </span>
+                    </td>
+                
+                <td>44.25</td>
+                <td>49.75</td>
+                <td>5.05</td>
+            </tr>
+        
+            
+                <tr class="tr_alt_2">
+            
+                <td>3</td>
+                <td>patton283</td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        50.6
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        49.05
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>397.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        51.25
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>1861.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        49.4
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>3199.0</p>
+                            
+                                <p>65.0</p>
+                            
+                                <p>347.0</p>
+                            
+                                <p>1001.0</p>
+                            
+                                <p>287.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        46.85
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>1310.0</p>
+                            
+                                <p>1550.0</p>
+                            
+                                <p>202.0</p>
+                            
+                                <p>1299.0</p>
+                            
+                                <p>1040.0</p>
+                            
+                                <p>349.0</p>
+                            
+                                <p>709.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        49.25
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>61.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        46.9
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>993.0</p>
+                            
+                                <p>2111.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        48.85
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>3408.0</p>
+                            
+                                <p>1094.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        48.05
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>412.0</p>
+                            
+                                <p>841.0</p>
+                            
+                                <p>1008.0</p>
+                            
+                                <p>2800.0</p>
+                            
+                                <p>1452.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip pit_next">
+                    
+                        66.15
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>2852.0</p>
+                            
+                                <p>1648.0</p>
+                            
+                                <p>362.0</p>
+                            
+                                <p>1751.0</p>
+                            
+                                <p>790.0</p>
+                            
+                                <p>711.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip pit_last">
+                    
+                        48.8
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>1399.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        47.9
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>245.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        47.65
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip pit_next">
+                    
+                        64.05
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>246.0</p>
+                            
+                                <p>1463.0</p>
+                            
+                                <p>295.0</p>
+                            
+                                <p>1602.0</p>
+                            
+                                <p>1598.0</p>
+                            
+                                <p>2992.0</p>
+                            
+                                <p>1608.0</p>
+                            
+                                <p>153.0</p>
+                            
+                                <p>239.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip pit_last">
+                    
+                        52.9
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        46.65
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>1365.0</p>
+                            
+                                <p>1049.0</p>
+                            
+                                <p>1300.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        47.1
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>659.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        48.4
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>712.0</p>
+                            
+                                <p>1886.0</p>
+                            
+                                <p>414.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        46.95
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>1260.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        46.8
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>157.0</p>
+                            
+                                <p>702.0</p>
+                            
+                                <p>41.0</p>
+                            
+                                <p>904.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        47.05
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>709.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        47.35
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                        </span>
+                    </td>
+                
+                <td>46.65</td>
+                <td>49.9</td>
+                <td>5.05</td>
+            </tr>
+        
+            
+                <tr class="tr_alt_1">
+            
+                <td>4</td>
+                <td>aChaoticGod</td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        54.35
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>650.0</p>
+                            
+                                <p>98.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        46.65
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        47.8
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>262.0</p>
+                            
+                                <p>2002.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        47.25
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>1561.0</p>
+                            
+                                <p>689.0</p>
+                            
+                                <p>1166.0</p>
+                            
+                                <p>1033.0</p>
+                            
+                                <p>552.0</p>
+                            
+                                <p>215.0</p>
+                            
+                                <p>994.0</p>
+                            
+                                <p>355.0</p>
+                            
+                                <p>1849.0</p>
+                            
+                                <p>249.0</p>
+                            
+                                <p>2453.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        45.35
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        50.55
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>1248.0</p>
+                            
+                                <p>207.0</p>
+                            
+                                <p>488.0</p>
+                            
+                                <p>464.0</p>
+                            
+                                <p>4448.0</p>
+                            
+                                <p>1504.0</p>
+                            
+                                <p>196.0</p>
+                            
+                                <p>1100.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        47.7
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>1203.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        46.75
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        48.05
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>1852.0</p>
+                            
+                                <p>311.0</p>
+                            
+                                <p>786.0</p>
+                            
+                                <p>465.0</p>
+                            
+                                <p>549.0</p>
+                            
+                                <p>1501.0</p>
+                            
+                                <p>799.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip pit_next">
+                    
+                        62.3
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>2618.0</p>
+                            
+                                <p>2599.0</p>
+                            
+                                <p>396.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip pit_last">
+                    
+                        49.2
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>1215.0</p>
+                            
+                                <p>36.0</p>
+                            
+                                <p>1965.0</p>
+                            
+                                <p>799.0</p>
+                            
+                                <p>793.0</p>
+                            
+                                <p>1258.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip pit_next">
+                    
+                        61.55
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip pit_last">
+                    
+                        46.75
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>117.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        51.1
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>357.0</p>
+                            
+                                <p>305.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        60.15
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>2012.0</p>
+                            
+                                <p>48.0</p>
+                            
+                                <p>2550.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        45.75
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>7.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        45.25
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>1365.0</p>
+                            
+                                <p>737.0</p>
+                            
+                                <p>3161.0</p>
+                            
+                                <p>1251.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        45.3
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>152.0</p>
+                            
+                                <p>562.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        48.15
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        49.0
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        49.15
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        53.95
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                        </span>
+                    </td>
+                
+                <td>45.25</td>
+                <td>50.1</td>
+                <td>5.1</td>
+            </tr>
+        
+            
+                <tr class="tr_alt_2">
+            
+                <td>5</td>
+                <td>Cyborg0830</td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        48.9
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>2606.0</p>
+                            
+                                <p>646.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        48.3
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>204.0</p>
+                            
+                                <p>3910.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip pit_next">
+                    
+                        64.4
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>452.0</p>
+                            
+                                <p>448.0</p>
+                            
+                                <p>412.0</p>
+                            
+                                <p>688.0</p>
+                            
+                                <p>2455.0</p>
+                            
+                                <p>658.0</p>
+                            
+                                <p>2648.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip pit_last">
+                    
+                        47.6
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>50.0</p>
+                            
+                                <p>307.0</p>
+                            
+                                <p>3087.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        49.65
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>1367.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        48.3
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>2008.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        49.55
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>158.0</p>
+                            
+                                <p>2703.0</p>
+                            
+                                <p>994.0</p>
+                            
+                                <p>1154.0</p>
+                            
+                                <p>299.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip pit_next">
+                    
+                        62.65
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip pit_last">
+                    
+                        54.2
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>561.0</p>
+                            
+                                <p>1097.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        47.5
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>1605.0</p>
+                            
+                                <p>702.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        47.75
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>162.0</p>
+                            
+                                <p>643.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        53.25
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>3059.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        53.75
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>857.0</p>
+                            
+                                <p>144.0</p>
+                            
+                                <p>3494.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        47.55
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>9.0</p>
+                            
+                                <p>153.0</p>
+                            
+                                <p>1648.0</p>
+                            
+                                <p>941.0</p>
+                            
+                                <p>2359.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        68.9
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        52.7
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>808.0</p>
+                            
+                                <p>2191.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        49.75
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        49.7
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>2857.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        51.4
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>0.0</p>
+                            
+                                <p>1511.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        50.4
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        50.3
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        51.75
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                        </span>
+                    </td>
+                
+                <td>47.5</td>
+                <td>52.2</td>
+                <td>5.65</td>
+            </tr>
+        
+            
+                <tr class="tr_alt_1">
+            
+                <td>6</td>
+                <td>Antenox</td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        62.45
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>610.0</p>
+                            
+                                <p>403.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        52.0
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>314.0</p>
+                            
+                                <p>2090.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        48.05
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>544.0</p>
+                            
+                                <p>60.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        52.9
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>64.0</p>
+                            
+                                <p>1049.0</p>
+                            
+                                <p>3589.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        47.45
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>1803.0</p>
+                            
+                                <p>207.0</p>
+                            
+                                <p>286.0</p>
+                            
+                                <p>1417.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        49.4
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>1361.0</p>
+                            
+                                <p>1948.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        48.4
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>1312.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        50.65
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>1014.0</p>
+                            
+                                <p>2147.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        47.3
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>360.0</p>
+                            
+                                <p>3088.0</p>
+                            
+                                <p>1202.0</p>
+                            
+                                <p>1199.0</p>
+                            
+                                <p>1459.0</p>
+                            
+                                <p>348.0</p>
+                            
+                                <p>1403.0</p>
+                            
+                                <p>3601.0</p>
+                            
+                                <p>1744.0</p>
+                            
+                                <p>145.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip pit_next">
+                    
+                        64.85
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>961.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip pit_last">
+                    
+                        49.45
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>4913.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip pit_next">
+                    
+                        71.05
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>103.0</p>
+                            
+                                <p>55.0</p>
+                            
+                                <p>855.0</p>
+                            
+                                <p>2147.0</p>
+                            
+                                <p>605.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip pit_last">
+                    
+                        47.55
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        53.35
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>5005.0</p>
+                            
+                                <p>1945.0</p>
+                            
+                                <p>2649.0</p>
+                            
+                                <p>952.0</p>
+                            
+                                <p>2105.0</p>
+                            
+                                <p>1154.0</p>
+                            
+                                <p>2941.0</p>
+                            
+                                <p>843.0</p>
+                            
+                                <p>1404.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        49.7
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>1408.0</p>
+                            
+                                <p>1392.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        49.9
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        60.4
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>2560.0</p>
+                            
+                                <p>1494.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        48.4
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>459.0</p>
+                            
+                                <p>544.0</p>
+                            
+                                <p>1957.0</p>
+                            
+                                <p>1049.0</p>
+                            
+                                <p>591.0</p>
+                            
+                                <p>1112.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        49.25
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        53.85
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>6807.0</p>
+                            
+                                <p>0.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        53.15
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>1310.0</p>
+                            
+                                <p>52.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        56.3
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>1858.0</p>
+                            
+                        </span>
+                    </td>
+                
+                <td>47.3</td>
+                <td>53.0</td>
+                <td>6.2</td>
+            </tr>
+        
+            
+                <tr class="tr_alt_2">
+            
+                <td>7</td>
+                <td>LeGoodz</td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        63.5
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>307.0</p>
+                            
+                                <p>500.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        52.5
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>1765.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        50.45
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip pit_next">
+                    
+                        64.05
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip pit_last">
+                    
+                        48.9
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        48.8
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>399.0</p>
+                            
+                                <p>1399.0</p>
+                            
+                                <p>208.0</p>
+                            
+                                <p>653.0</p>
+                            
+                                <p>1839.0</p>
+                            
+                                <p>107.0</p>
+                            
+                                <p>2155.0</p>
+                            
+                                <p>834.0</p>
+                            
+                                <p>611.0</p>
+                            
+                                <p>2155.0</p>
+                            
+                                <p>249.0</p>
+                            
+                                <p>49.0</p>
+                            
+                                <p>542.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        47.75
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>2308.0</p>
+                            
+                                <p>487.0</p>
+                            
+                                <p>611.0</p>
+                            
+                                <p>2193.0</p>
+                            
+                                <p>59.0</p>
+                            
+                                <p>904.0</p>
+                            
+                                <p>347.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip pit_next">
+                    
+                        63.15
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip pit_last">
+                    
+                        49.1
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>1008.0</p>
+                            
+                                <p>2252.0</p>
+                            
+                                <p>500.0</p>
+                            
+                                <p>500.0</p>
+                            
+                                <p>1446.0</p>
+                            
+                                <p>545.0</p>
+                            
+                                <p>1609.0</p>
+                            
+                                <p>1946.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        48.95
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>1214.0</p>
+                            
+                                <p>1952.0</p>
+                            
+                                <p>348.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        47.95
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>1408.0</p>
+                            
+                                <p>500.0</p>
+                            
+                                <p>544.0</p>
+                            
+                                <p>1562.0</p>
+                            
+                                <p>97.0</p>
+                            
+                                <p>4496.0</p>
+                            
+                                <p>202.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        49.75
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>406.0</p>
+                            
+                                <p>5757.0</p>
+                            
+                                <p>5448.0</p>
+                            
+                                <p>201.0</p>
+                            
+                                <p>598.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        48.35
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>1048.0</p>
+                            
+                                <p>2860.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        106.4
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        50.15
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>1514.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        49.9
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>298.0</p>
+                            
+                                <p>958.0</p>
+                            
+                                <p>904.0</p>
+                            
+                                <p>742.0</p>
+                            
+                                <p>145.0</p>
+                            
+                                <p>1897.0</p>
+                            
+                                <p>2206.0</p>
+                            
+                                <p>866.0</p>
+                            
+                                <p>1794.0</p>
+                            
+                                <p>536.0</p>
+                            
+                                <p>764.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        49.45
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>548.0</p>
+                            
+                                <p>1106.0</p>
+                            
+                                <p>1105.0</p>
+                            
+                                <p>539.0</p>
+                            
+                                <p>2699.0</p>
+                            
+                                <p>1246.0</p>
+                            
+                                <p>1013.0</p>
+                            
+                                <p>2704.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        48.95
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        55.35
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>752.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        55.2
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        48.45
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>809.0</p>
+                            
+                                <p>3348.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        47.2
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>305.0</p>
+                            
+                        </span>
+                    </td>
+                
+                <td>47.2</td>
+                <td>54.3</td>
+                <td>12.45</td>
+            </tr>
+        
+            
+                <tr class="tr_alt_1">
+            
+                <td>8</td>
+                <td>tetchjo</td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        58.4
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        58.25
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        56.65
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>411.0</p>
+                            
+                                <p>3398.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        55.75
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>42.0</p>
+                            
+                                <p>768.0</p>
+                            
+                                <p>298.0</p>
+                            
+                                <p>490.0</p>
+                            
+                                <p>59.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        48.7
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>109.0</p>
+                            
+                                <p>2850.0</p>
+                            
+                                <p>97.0</p>
+                            
+                                <p>790.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip pit_next">
+                    
+                        65.55
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip pit_last">
+                    
+                        51.3
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip pit_next">
+                    
+                        65.5
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>399.0</p>
+                            
+                                <p>350.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip pit_last">
+                    
+                        53.15
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>560.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        51.5
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>796.0</p>
+                            
+                                <p>314.0</p>
+                            
+                                <p>5149.0</p>
+                            
+                                <p>242.0</p>
+                            
+                                <p>2651.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        57.65
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        54.35
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        48.4
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>764.0</p>
+                            
+                                <p>251.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        63.35
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>1750.0</p>
+                            
+                                <p>855.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        49.75
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>448.0</p>
+                            
+                                <p>898.0</p>
+                            
+                                <p>658.0</p>
+                            
+                                <p>1943.0</p>
+                            
+                                <p>308.0</p>
+                            
+                                <p>1605.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        53.75
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>516.0</p>
+                            
+                                <p>1446.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        48.5
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>607.0</p>
+                            
+                                <p>237.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        50.1
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>461.0</p>
+                            
+                                <p>594.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        53.8
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        62.55
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>1811.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        56.9
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        51.45
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>6913.0</p>
+                            
+                                <p>1336.0</p>
+                            
+                                <p>3361.0</p>
+                            
+                                <p>2196.0</p>
+                            
+                                <p>2210.0</p>
+                            
+                                <p>1586.0</p>
+                            
+                                <p>1909.0</p>
+                            
+                        </span>
+                    </td>
+                
+                <td>48.4</td>
+                <td>55.25</td>
+                <td>5.25</td>
+            </tr>
+        
+            
+                <tr class="tr_alt_2">
+            
+                <td>9</td>
+                <td>pypippo2020</td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        58.0
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>313.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        52.45
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>112.0</p>
+                            
+                                <p>1445.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        55.95
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>746.0</p>
+                            
+                                <p>203.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        65.4
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>1363.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip pit_next">
+                    
+                        70.85
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>1214.0</p>
+                            
+                                <p>2293.0</p>
+                            
+                                <p>104.0</p>
+                            
+                                <p>1849.0</p>
+                            
+                                <p>687.0</p>
+                            
+                                <p>2401.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip pit_last">
+                    
+                        53.25
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        49.8
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>246.0</p>
+                            
+                                <p>310.0</p>
+                            
+                                <p>2105.0</p>
+                            
+                                <p>49.0</p>
+                            
+                                <p>638.0</p>
+                            
+                                <p>846.0</p>
+                            
+                                <p>452.0</p>
+                            
+                                <p>2560.0</p>
+                            
+                                <p>2752.0</p>
+                            
+                                <p>2147.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        52.05
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>214.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        56.45
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>901.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        51.4
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>558.0</p>
+                            
+                                <p>49.0</p>
+                            
+                                <p>556.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip pit_next">
+                    
+                        73.1
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>999.0</p>
+                            
+                                <p>261.0</p>
+                            
+                                <p>939.0</p>
+                            
+                                <p>1350.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip pit_last">
+                    
+                        48.8
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>448.0</p>
+                            
+                                <p>308.0</p>
+                            
+                                <p>1001.0</p>
+                            
+                                <p>290.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        68.05
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>14.0</p>
+                            
+                                <p>3191.0</p>
+                            
+                                <p>255.0</p>
+                            
+                                <p>2193.0</p>
+                            
+                                <p>799.0</p>
+                            
+                                <p>115.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        50.55
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>52.0</p>
+                            
+                                <p>1759.0</p>
+                            
+                                <p>1141.0</p>
+                            
+                                <p>861.0</p>
+                            
+                                <p>191.0</p>
+                            
+                                <p>907.0</p>
+                            
+                                <p>97.0</p>
+                            
+                                <p>1355.0</p>
+                            
+                                <p>1647.0</p>
+                            
+                                <p>1251.0</p>
+                            
+                                <p>240.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        50.8
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>564.0</p>
+                            
+                                <p>2203.0</p>
+                            
+                                <p>49.0</p>
+                            
+                                <p>139.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        52.95
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>1463.0</p>
+                            
+                                <p>349.0</p>
+                            
+                                <p>652.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        52.25
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>1557.0</p>
+                            
+                                <p>653.0</p>
+                            
+                                <p>598.0</p>
+                            
+                                <p>1889.0</p>
+                            
+                                <p>15.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        49.25
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        58.75
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>309.0</p>
+                            
+                                <p>1452.0</p>
+                            
+                                <p>299.0</p>
+                            
+                                <p>937.0</p>
+                            
+                                <p>967.0</p>
+                            
+                                <p>549.0</p>
+                            
+                                <p>1800.0</p>
+                            
+                                <p>347.0</p>
+                            
+                                <p>549.0</p>
+                            
+                                <p>1355.0</p>
+                            
+                                <p>1397.0</p>
+                            
+                                <p>903.0</p>
+                            
+                                <p>396.0</p>
+                            
+                                <p>651.0</p>
+                            
+                                <p>698.0</p>
+                            
+                                <p>1151.0</p>
+                            
+                                <p>648.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        52.55
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        48.45
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>3151.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        51.5
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                        </span>
+                    </td>
+                
+                <td>48.45</td>
+                <td>55.55</td>
+                <td>7.1</td>
+            </tr>
+        
+            
+                <tr class="tr_alt_1">
+            
+                <td>10</td>
+                <td>Wubann</td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        59.65
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        58.2
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>265.0</p>
+                            
+                                <p>1348.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        61.85
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>460.0</p>
+                            
+                                <p>598.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        58.3
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>1195.0</p>
+                            
+                                <p>611.0</p>
+                            
+                                <p>1654.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        56.25
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>1607.0</p>
+                            
+                                <p>2038.0</p>
+                            
+                                <p>851.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        54.9
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>356.0</p>
+                            
+                                <p>1095.0</p>
+                            
+                                <p>15.0</p>
+                            
+                                <p>2550.0</p>
+                            
+                                <p>945.0</p>
+                            
+                                <p>293.0</p>
+                            
+                                <p>651.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip pit_next">
+                    
+                        68.4
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>700.0</p>
+                            
+                                <p>3354.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip pit_last">
+                    
+                        51.0
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>1043.0</p>
+                            
+                                <p>2562.0</p>
+                            
+                                <p>1493.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        58.75
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>1715.0</p>
+                            
+                                <p>234.0</p>
+                            
+                                <p>65.0</p>
+                            
+                                <p>1696.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip pit_next">
+                    
+                        70.1
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>210.0</p>
+                            
+                                <p>605.0</p>
+                            
+                                <p>1049.0</p>
+                            
+                                <p>2534.0</p>
+                            
+                                <p>1267.0</p>
+                            
+                                <p>1147.0</p>
+                            
+                                <p>237.0</p>
+                            
+                                <p>4351.0</p>
+                            
+                                <p>416.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip pit_last">
+                    
+                        50.35
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>1915.0</p>
+                            
+                                <p>745.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        53.45
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        56.5
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>217.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        54.65
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        58.35
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>949.0</p>
+                            
+                                <p>309.0</p>
+                            
+                                <p>903.0</p>
+                            
+                                <p>1751.0</p>
+                            
+                                <p>4100.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        55.1
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>411.0</p>
+                            
+                                <p>3503.0</p>
+                            
+                                <p>299.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        53.15
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>997.0</p>
+                            
+                                <p>65.0</p>
+                            
+                                <p>1136.0</p>
+                            
+                                <p>560.0</p>
+                            
+                                <p>452.0</p>
+                            
+                                <p>2637.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        55.2
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>408.0</p>
+                            
+                                <p>153.0</p>
+                            
+                                <p>3203.0</p>
+                            
+                                <p>494.0</p>
+                            
+                                <p>605.0</p>
+                            
+                                <p>495.0</p>
+                            
+                                <p>2305.0</p>
+                            
+                                <p>1791.0</p>
+                            
+                                <p>1058.0</p>
+                            
+                                <p>287.0</p>
+                            
+                                <p>2515.0</p>
+                            
+                                <p>690.0</p>
+                            
+                                <p>3159.0</p>
+                            
+                                <p>1333.0</p>
+                            
+                                <p>557.0</p>
+                            
+                                <p>1306.0</p>
+                            
+                                <p>894.0</p>
+                            
+                                <p>194.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        51.95
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>2255.0</p>
+                            
+                                <p>705.0</p>
+                            
+                                <p>7841.0</p>
+                            
+                                <p>753.0</p>
+                            
+                                <p>857.0</p>
+                            
+                                <p>394.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        52.35
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>2405.0</p>
+                            
+                                <p>2507.0</p>
+                            
+                                <p>2155.0</p>
+                            
+                                <p>2050.0</p>
+                            
+                                <p>1784.0</p>
+                            
+                                <p>364.0</p>
+                            
+                                <p>85.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        52.8
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>550.0</p>
+                            
+                                <p>1206.0</p>
+                            
+                                <p>605.0</p>
+                            
+                                <p>1548.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        53.5
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>6293.0</p>
+                            
+                                <p>2454.0</p>
+                            
+                                <p>7061.0</p>
+                            
+                        </span>
+                    </td>
+                
+                <td>50.35</td>
+                <td>56.6</td>
+                <td>4.95</td>
+            </tr>
+        
+            
+                <tr class="tr_alt_2">
+            
+                <td>11</td>
+                <td>angelucane</td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        56.65
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>448.0</p>
+                            
+                                <p>1610.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        51.75
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>1152.0</p>
+                            
+                                <p>349.0</p>
+                            
+                                <p>2498.0</p>
+                            
+                                <p>1459.0</p>
+                            
+                                <p>792.0</p>
+                            
+                                <p>1160.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        55.75
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>511.0</p>
+                            
+                                <p>1647.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        54.65
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>1098.0</p>
+                            
+                                <p>63.0</p>
+                            
+                                <p>896.0</p>
+                            
+                                <p>1953.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        53.7
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>1149.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        57.8
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>2168.0</p>
+                            
+                                <p>37.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        52.1
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>316.0</p>
+                            
+                                <p>549.0</p>
+                            
+                                <p>2086.0</p>
+                            
+                                <p>812.0</p>
+                            
+                                <p>740.0</p>
+                            
+                                <p>810.0</p>
+                            
+                                <p>86.0</p>
+                            
+                                <p>1762.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        58.95
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>1706.0</p>
+                            
+                                <p>703.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        53.55
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>1054.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        55.9
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>1263.0</p>
+                            
+                                <p>395.0</p>
+                            
+                                <p>855.0</p>
+                            
+                                <p>2092.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        62.3
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>710.0</p>
+                            
+                                <p>2550.0</p>
+                            
+                                <p>241.0</p>
+                            
+                                <p>749.0</p>
+                            
+                                <p>901.0</p>
+                            
+                                <p>450.0</p>
+                            
+                                <p>2146.0</p>
+                            
+                                <p>663.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip pit_next">
+                    
+                        75.65
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip pit_next">
+                    
+                        77.45
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip pit_last">
+                    
+                        53.85
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>3259.0</p>
+                            
+                                <p>1905.0</p>
+                            
+                                <p>88.0</p>
+                            
+                                <p>1357.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        56.05
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        50.85
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>458.0</p>
+                            
+                                <p>444.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        59.95
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>2663.0</p>
+                            
+                                <p>1001.0</p>
+                            
+                                <p>90.0</p>
+                            
+                                <p>1046.0</p>
+                            
+                                <p>704.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        53.55
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>714.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        65.8
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        53.55
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>900.0</p>
+                            
+                                <p>62.0</p>
+                            
+                                <p>1188.0</p>
+                            
+                                <p>252.0</p>
+                            
+                                <p>1561.0</p>
+                            
+                                <p>6699.0</p>
+                            
+                                <p>1349.0</p>
+                            
+                                <p>1040.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        61.85
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        60.45
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>4757.0</p>
+                            
+                                <p>18991.0</p>
+                            
+                        </span>
+                    </td>
+                
+                <td>50.85</td>
+                <td>58.3</td>
+                <td>6.85</td>
+            </tr>
+        
+            
+                <tr class="tr_alt_1">
+            
+                <td>12</td>
+                <td>ATOMIC_TORTOISE</td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        64.35
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>2614.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip pit_next">
+                    
+                        74.7
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>254.0</p>
+                            
+                                <p>14.0</p>
+                            
+                                <p>1049.0</p>
+                            
+                                <p>487.0</p>
+                            
+                                <p>551.0</p>
+                            
+                                <p>1158.0</p>
+                            
+                                <p>952.0</p>
+                            
+                                <p>1687.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip pit_last">
+                    
+                        61.9
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>1557.0</p>
+                            
+                                <p>2085.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip pit_next">
+                    
+                        68.2
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip pit_last">
+                    
+                        63.8
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>562.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        57.5
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>1103.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        84.85
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>1265.0</p>
+                            
+                                <p>2137.0</p>
+                            
+                                <p>60.0</p>
+                            
+                                <p>494.0</p>
+                            
+                                <p>1159.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        68.85
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>653.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        70.55
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>161.0</p>
+                            
+                                <p>201.0</p>
+                            
+                                <p>1050.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        69.05
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>753.0</p>
+                            
+                                <p>1295.0</p>
+                            
+                                <p>416.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        82.5
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>8.0</p>
+                            
+                                <p>1445.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        93.6
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>556.0</p>
+                            
+                                <p>1095.0</p>
+                            
+                                <p>309.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        110.2
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>1518.0</p>
+                            
+                                <p>49.0</p>
+                            
+                                <p>535.0</p>
+                            
+                                <p>4517.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        67.6
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>1150.0</p>
+                            
+                                <p>2053.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        83.1
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>246.0</p>
+                            
+                                <p>202.0</p>
+                            
+                                <p>413.0</p>
+                            
+                                <p>7401.0</p>
+                            
+                                <p>451.0</p>
+                            
+                                <p>2996.0</p>
+                            
+                                <p>1104.0</p>
+                            
+                                <p>1195.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        58.4
+                        <span class="tooltip-text">
+                            
+                                <p>0.0</p>
+                            
+                                <p>1556.0</p>
+                            
+                                <p>2154.0</p>
+                            
+                                <p>1737.0</p>
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        
+                        <span class="tooltip-text">
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        
+                        <span class="tooltip-text">
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        
+                        <span class="tooltip-text">
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        
+                        <span class="tooltip-text">
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        
+                        <span class="tooltip-text">
+                            
+                        </span>
+                    </td>
+                
+                    
+                        <td class="tooltip">
+                    
+                        
+                        <span class="tooltip-text">
+                            
+                        </span>
+                    </td>
+                
+                <td>57.5</td>
+                <td>73.7</td>
+                <td>13.6</td>
+            </tr>
+        
+    </table>
+
+    <script defer>
+        const table = document.getElementById("table")
+
+        const lookup = {
+            1: "gold",
+            2: "silver",
+            3: "#cd7f32",
+        }
+
+        for (let i = 0; i < table.children.item(0).children.length; i++) {
+            const element = table.children.item(0).children.item(i);
+
+            if (i in lookup) {
+                element.style.color = lookup[i]
+            }
+            
+        }
+    </script>
+    
+</body>
+</html>
